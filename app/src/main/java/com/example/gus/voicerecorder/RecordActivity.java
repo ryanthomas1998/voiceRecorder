@@ -27,6 +27,7 @@ public class RecordActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_record);
+        getActionBar().hide();
 
         final Chronometer chronometer = (Chronometer) findViewById(R.id.chrono);
 
