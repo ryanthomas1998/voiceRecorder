@@ -3,9 +3,12 @@ package com.example.gus.voicerecorder;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.media.MediaPlayer;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -34,6 +37,15 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        FloatingActionButton toRecord = (FloatingActionButton) findViewById(R.id.record);
+        toRecord.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#ffffff")));
+        toRecord.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getApplicationContext(), RecordActivity.class).putExtra("filename", ((EditText) findViewById(R.id.edit_txt)).getText().toString().replaceAll(" ", "")));
+            }
+
+        });
 
         File file = new File(Environment.getExternalStorageDirectory(), "/VoiceRecorder/" );
         file.mkdir();
@@ -44,19 +56,13 @@ public class MainActivity extends AppCompatActivity {
 
         final ListView listView = (ListView) findViewById(R.id.filenames);
         listView.setAdapter(FilenameAdapter);
-        if(filenames.size() > 0 ) {
+        //if(filenames.size() > 0 ) {
             Collections.addAll(filenames, root.list());
             ListView list = (ListView) findViewById(R.id.filenames);
             list.invalidateViews();
-        }
-        Button button = (Button) findViewById(R.id.btn1);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(), RecordActivity.class).putExtra("filename", ((EditText) findViewById(R.id.edit_txt)).getText().toString().replaceAll(" ", "")));
-            }
+        //}
 
-        });
+
 
         ((ListView) findViewById(R.id.filenames)).setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override

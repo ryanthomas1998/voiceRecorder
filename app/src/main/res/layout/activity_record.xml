@@ -1,15 +1,12 @@
 
 <android.support.design.widget.CoordinatorLayout
 xmlns:android="http://schemas.android.com/apk/res/android"
-xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:app="http://schemas.android.com/apk/res-auto" android:windowActionBar="false"
 xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-android:layout_height="match_parent" android:fitsSystemWindows="true">
+android:layout_height="match_parent" android:fitsSystemWindows="true"
+    style="@style/Theme.AppCompat.NoActionBar">
 
-<android.support.design.widget.AppBarLayout android:id="@+id/app_bar"
-    android:fitsSystemWindows="true" android:layout_height="72dp"
-    android:layout_width="match_parent" >
 
-</android.support.design.widget.AppBarLayout>
 
     <RelativeLayout
         xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
@@ -51,7 +48,8 @@ android:layout_height="match_parent" android:fitsSystemWindows="true">
         android:layout_width="match_parent"
         android:layout_height="100dp"
         android:layout_gravity="end|bottom"
-        android:background="#f0f0f0"
+        android:background="#D8D8D8"
+        android:elevation="3dp"
         android:id="@+id/bottomBar"
         ></RelativeLayout>
     <android.support.design.widget.FloatingActionButton
