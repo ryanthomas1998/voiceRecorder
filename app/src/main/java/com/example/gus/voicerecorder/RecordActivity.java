@@ -1,10 +1,13 @@
 package com.example.gus.voicerecorder;
 
 import android.content.Intent;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.media.MediaRecorder;
 import android.os.Environment;
 import android.os.SystemClock;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -27,7 +30,7 @@ public class RecordActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_record);
-        getActionBar().hide();
+        //getActionBar().hide();
 
         final Chronometer chronometer = (Chronometer) findViewById(R.id.chrono);
 
@@ -37,8 +40,8 @@ public class RecordActivity extends AppCompatActivity {
         myAudioRecorder.setAudioEncoder(MediaRecorder.OutputFormat.AMR_NB);
         myAudioRecorder.setOutputFile(Environment.getExternalStorageDirectory().getAbsolutePath() + "/VoiceRecorder/" + getIntent().getStringExtra("filename") + ".3gp");
 
-        ImageButton mic = (ImageButton) findViewById(R.id.mic);
-        mic.setBackground(getDrawable(R.mipmap.microphone));
+        FloatingActionButton mic = (FloatingActionButton) findViewById(R.id.record);
+        mic.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#ffffff")));
         mic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
