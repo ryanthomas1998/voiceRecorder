@@ -50,7 +50,7 @@ android:layout_height="match_parent" android:fitsSystemWindows="true"
         android:layout_gravity="end|bottom"
         android:background="#D8D8D8"
         android:elevation="3dp"
-        android:weightSum="2"
+        android:weightSum="3"
         android:orientation="horizontal"
         android:id="@+id/bottomBar"
         >
@@ -60,6 +60,10 @@ android:layout_height="match_parent" android:fitsSystemWindows="true"
             android:layout_weight="1"
             android:src="@drawable/pause"
             />
+        <ImageButton
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"/>
         <ImageButton
             android:layout_width="0dp"
             android:layout_height="match_parent"

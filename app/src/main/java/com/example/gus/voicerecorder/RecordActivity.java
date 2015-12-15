@@ -2,6 +2,8 @@ package com.example.gus.voicerecorder;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.ColorStateList;
@@ -22,6 +24,7 @@ import android.widget.Chronometer;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,34 +34,21 @@ import java.io.IOException;
 public class RecordActivity extends AppCompatActivity {
 
     private int counter = 0;
-
+    public Chronometer chronometer;
+    public MediaRecorder myAudioRecorder ;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_record);
 
+        chronometer = (Chronometer) findViewById(R.id.chrono);
+        myAudioRecorder = new MediaRecorder();
 
-        final Chronometer chronometer = (Chronometer) findViewById(R.id.chrono);
-
-        final MediaRecorder myAudioRecorder = new MediaRecorder();
-//        if (ContextCompat.checkSelfPermission(this,
-//                Manifest.permission.RECORD_AUDIO)
-//                != PackageManager.PERMISSION_GRANTED) {
-//
-//                ActivityCompat.requestPermissions(this,
-//                        new String[]{Manifest.permission.RECORD_AUDIO},
-//                        0);
-//
-//                ActivityCompat.requestPermissions(this,
-//                        new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
-//                        0);
-//
-//        }
         myAudioRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
         myAudioRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
         myAudioRecorder.setAudioEncoder(MediaRecorder.OutputFormat.AMR_NB);
-        myAudioRecorder.setOutputFile(Environment.getExternalStorageDirectory().getAbsolutePath() + "/VoiceRecorder/" + getIntent().getStringExtra("filename") + ".3gp");
+
 
         FloatingActionButton mic = (FloatingActionButton) findViewById(R.id.record);
         mic.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#ffffff")));
@@ -66,22 +56,14 @@ public class RecordActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (counter == 0) {
-                    try {
-                        myAudioRecorder.prepare();
-                        myAudioRecorder.start();
+                        EditDialog();
                         counter++;
-                        chronometer.setBase(SystemClock.elapsedRealtime());
-                        chronometer.start();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    } catch (IllegalStateException e) {
-                        e.printStackTrace();
-                    }
                 } else {
-                    myAudioRecorder.stop();
-                    myAudioRecorder.release();
+
                     chronometer.stop();
                     counter--;
+                    myAudioRecorder.stop();
+                    myAudioRecorder.release();
                     startActivity(new Intent(getApplicationContext(), MainActivity.class));
                 }
             }
@@ -89,4 +71,46 @@ public class RecordActivity extends AppCompatActivity {
 
 
     }
+    public void EditDialog() {
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(RecordActivity.this);
+        alertDialog.setTitle("Filename");
+        alertDialog.setMessage("Enter Filename");
+
+        final EditText input = new EditText(RecordActivity.this);
+        input.setPadding(10, 10, 10, 10);
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.MATCH_PARENT);
+        input.setLayoutParams(lp);
+
+        alertDialog.setView(input);
+
+        alertDialog.setPositiveButton("YES",
+                new DialogInterface.OnClickListener() {
+
+                    public void onClick(DialogInterface dialog, int which) {
+                        Log.d("Input", input.getText().toString());
+                        myAudioRecorder.setOutputFile(Environment.getExternalStorageDirectory().getAbsolutePath() + "/VoiceRecorder/" + input.getText().toString() + ".mp3");
+                        try {
+                            myAudioRecorder.prepare();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                        myAudioRecorder.start();
+                        chronometer.setBase(SystemClock.elapsedRealtime());
+                        chronometer.start();
+                    }
+                });
+
+        alertDialog.setNegativeButton("NO",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                        counter--;
+                    }
+                });
+
+        alertDialog.show();
+    }
+
 }
