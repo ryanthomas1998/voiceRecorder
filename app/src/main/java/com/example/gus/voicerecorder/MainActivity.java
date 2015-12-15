@@ -9,6 +9,8 @@ import android.media.MediaPlayer;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -105,11 +107,22 @@ public class MainActivity extends AppCompatActivity {
                 builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        String dFile = filenames.get(position);
+                        final String dFile = filenames.get(position);
                         Log.d("filename", dFile);
                         File delFile = new File(root + "/" + dFile);
                         delFile.delete();
-                        Toast.makeText(MainActivity.this, "Item Deleted", Toast.LENGTH_SHORT).show();
+
+                        Snackbar snackbar = Snackbar
+                                .make( findViewById(R.id.coordinatorLayout), dFile + " is deleted", Snackbar.LENGTH_LONG)
+                                .setAction("UNDO", new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View view) {
+                                        Snackbar snackbar = Snackbar.make(findViewById(R.id.coordinatorLayout), dFile +" is restored", Snackbar.LENGTH_SHORT);
+                                        snackbar.show();
+                                    }
+                                });
+
+                        snackbar.show();
                         filenames.remove(position);
                         ((ListView) findViewById(R.id.filenames)).invalidateViews();
                     }
