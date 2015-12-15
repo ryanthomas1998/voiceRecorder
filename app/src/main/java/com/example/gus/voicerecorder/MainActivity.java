@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
         toRecord.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(), RecordActivity.class).putExtra("filename", ((EditText) findViewById(R.id.edit_txt)).getText().toString().replaceAll(" ", "")));
+                startActivity(new Intent(getApplicationContext(), RecordActivity.class));
             }
 
         });
@@ -62,39 +62,6 @@ public class MainActivity extends AppCompatActivity {
             list.invalidateViews();
         //}
 
-
-
-        ((ListView) findViewById(R.id.filenames)).setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View view, int p, long id) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-                final int position = p;
-                builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        String dFile = filenames.get(position);
-                        Log.d("filename", dFile);
-                        File delFile = new File(root + "/" + dFile);
-                        delFile.delete();
-                        Toast.makeText(MainActivity.this, "Item Deleted", Toast.LENGTH_SHORT).show();
-                        filenames.remove(position);
-                        ((ListView) findViewById(R.id.filenames)).invalidateViews();
-                    }
-                });
-                builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-
-                    }
-                });
-
-                builder.setTitle("Delete?");
-                AlertDialog dialog = builder.create();
-                dialog.show();
-                return false;
-
-            }
-        });
 
         ListView rows = (ListView) findViewById(R.id.filenames);
         rows.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -129,6 +96,39 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+
+        ((ListView) findViewById(R.id.filenames)).setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int p, long id) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                final int position = p;
+                builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        String dFile = filenames.get(position);
+                        Log.d("filename", dFile);
+                        File delFile = new File(root + "/" + dFile);
+                        delFile.delete();
+                        Toast.makeText(MainActivity.this, "Item Deleted", Toast.LENGTH_SHORT).show();
+                        filenames.remove(position);
+                        ((ListView) findViewById(R.id.filenames)).invalidateViews();
+                    }
+                });
+                builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+
+                builder.setTitle("Delete?");
+                AlertDialog dialog = builder.create();
+                dialog.show();
+                return true;
+
+            }
+        });
+
 
 
     }
