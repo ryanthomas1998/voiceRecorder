@@ -1,5 +1,7 @@
 package com.example.gus.voicerecorder;
 
+import android.animation.Animator;
+import android.app.ActivityOptions;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -11,14 +13,20 @@ import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.CoordinatorLayout;
+import android.support.v4.app.ActivityOptionsCompat;
+import android.support.v4.util.Pair;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.transition.Explode;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewAnimationUtils;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -37,17 +45,52 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+       // getWindow().requestFeature(Window.FEATURE_CONTENT_TRANSITIONS);
         setContentView(R.layout.activity_main);
 
+
+        final View fabView = findViewById(R.id.record);
         FloatingActionButton toRecord = (FloatingActionButton) findViewById(R.id.record);
+        final LinearLayout bottomBar = (LinearLayout) findViewById(R.id.bottomBar);
         toRecord.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#ffffff")));
         toRecord.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(), RecordActivity.class));
+                Intent intent = new Intent(MainActivity.this, RecordActivity.class);
+
+                ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(
+                        // the context of the activity
+                        MainActivity.this,
+
+                        // For each shared element, add to this method a new Pair item,
+                        // which contains the reference of the view we are transitioning *from*,
+                        // and the value of the transitionName attribute
+
+                        new Pair<View, String>(v.findViewById(R.id.record),
+                            "fab"),
+                        new Pair<View, String>(bottomBar,
+                                "bottom")
+                );
+
+                        startActivity(intent, options.toBundle());
             }
 
         });
+
+        findViewById(R.id.settings).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int cx = v.getRight() - 30;
+                int cy = v.getBottom() - 60;
+                int finalRadius = Math.max(v.getWidth(), v.getHeight());
+                Animator anim = ViewAnimationUtils.createCircularReveal(v, cx, cy, 0, finalRadius);
+                v.setVisibility(View.VISIBLE);
+                anim.start();
+
+            }
+        });
+
 
         File file = new File(Environment.getExternalStorageDirectory(), "/VoiceRecorder/" );
         file.mkdir();
