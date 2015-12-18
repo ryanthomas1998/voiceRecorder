@@ -50,7 +50,6 @@ android:layout_height="match_parent" android:fitsSystemWindows="true"
             android:text="Function"
             android:paddingRight="25dp"
             android:textAllCaps="false"
-
             android:textColor="#ffffff"
             android:textSize="20sp"
             android:layout_weight="1"/>
@@ -72,6 +71,7 @@ android:layout_height="match_parent" android:fitsSystemWindows="true"
     app:layout_anchor="@id/bottomBar"
     android:id="@+id/record"
     android:transitionName="fab"
+
     app:layout_anchorGravity="bottom|center" android:src="@drawable/microphone" />
 </android.support.design.widget.CoordinatorLayout>
 

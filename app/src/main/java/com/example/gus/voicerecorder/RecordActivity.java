@@ -3,6 +3,8 @@ package com.example.gus.voicerecorder;
 import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Dialog;
+import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -17,8 +19,8 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.transition.Explode;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.widget.Chronometer;
@@ -37,11 +39,11 @@ public class RecordActivity extends AppCompatActivity {
     private int counter = 0;
     public Chronometer chronometer;
     public MediaRecorder myAudioRecorder ;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-      //  getWindow().requestFeature(Window.FEATURE_CONTENT_TRANSITIONS);
         setContentView(R.layout.activity_record);
 
         chronometer = (Chronometer) findViewById(R.id.chrono);
@@ -74,45 +76,39 @@ public class RecordActivity extends AppCompatActivity {
 
     }
     public void EditDialog() {
-        AlertDialog.Builder alertDialog = new AlertDialog.Builder(RecordActivity.this);
-        alertDialog.setTitle("Filename");
-        alertDialog.setMessage("Enter Filename");
+        LayoutInflater factory = LayoutInflater.from(this);
+        final View FileDialogView = factory.inflate(
+                R.layout.filedialog, null);
+        final AlertDialog FileDialog = new AlertDialog.Builder(this).create();
+        FileDialog.setView(FileDialogView);
+        FileDialogView.findViewById(R.id.yes).setOnClickListener(new View.OnClickListener() {
 
-        final EditText input = new EditText(RecordActivity.this);
-        input.setPadding(10, 10, 10, 10);
-        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.MATCH_PARENT);
-        input.setLayoutParams(lp);
+            @Override
+            public void onClick(View v) {
+                myAudioRecorder.setOutputFile(Environment.getExternalStorageDirectory().getAbsolutePath() + "/VoiceRecorder/" + ((TextView) FileDialogView.findViewById(R.id.filename)).getText().toString() + ".mp3");
+                try {
+                    myAudioRecorder.prepare();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                myAudioRecorder.start();
+                chronometer.setBase(SystemClock.elapsedRealtime());
+                chronometer.start();
+                FileDialog.dismiss();
+            }
+        });
+        FileDialogView.findViewById(R.id.no).setOnClickListener(new View.OnClickListener() {
 
-        alertDialog.setView(input);
+            @Override
+            public void onClick(View v) {
+                FileDialog.dismiss();
 
-        alertDialog.setPositiveButton("YES",
-                new DialogInterface.OnClickListener() {
+            }
+        });
 
-                    public void onClick(DialogInterface dialog, int which) {
-                        Log.d("Input", input.getText().toString());
-                        myAudioRecorder.setOutputFile(Environment.getExternalStorageDirectory().getAbsolutePath() + "/VoiceRecorder/" + input.getText().toString() + ".mp3");
-                        try {
-                            myAudioRecorder.prepare();
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                        myAudioRecorder.start();
-                        chronometer.setBase(SystemClock.elapsedRealtime());
-                        chronometer.start();
-                    }
-                });
+        FileDialog.show();
 
-        alertDialog.setNegativeButton("NO",
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
-                        counter--;
-                    }
-                });
-
-        alertDialog.show();
     }
+
 
 }

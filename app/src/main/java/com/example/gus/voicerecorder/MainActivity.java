@@ -1,6 +1,7 @@
 package com.example.gus.voicerecorder;
 
 import android.animation.Animator;
+import android.app.Activity;
 import android.app.ActivityOptions;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -46,7 +47,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-       // getWindow().requestFeature(Window.FEATURE_CONTENT_TRANSITIONS);
+
+
         setContentView(R.layout.activity_main);
 
 
@@ -74,6 +76,7 @@ public class MainActivity extends AppCompatActivity {
                 );
 
                         startActivity(intent, options.toBundle());
+
             }
 
         });
@@ -156,11 +159,11 @@ public class MainActivity extends AppCompatActivity {
                         delFile.delete();
 
                         Snackbar snackbar = Snackbar
-                                .make( findViewById(R.id.coordinatorLayout), dFile + " is deleted", Snackbar.LENGTH_LONG)
+                                .make(findViewById(R.id.coordinatorLayout), dFile + " is deleted", Snackbar.LENGTH_LONG)
                                 .setAction("UNDO", new View.OnClickListener() {
                                     @Override
                                     public void onClick(View view) {
-                                        Snackbar snackbar = Snackbar.make(findViewById(R.id.coordinatorLayout), dFile +" is restored", Snackbar.LENGTH_SHORT);
+                                        Snackbar snackbar = Snackbar.make(findViewById(R.id.coordinatorLayout), dFile + " is restored", Snackbar.LENGTH_SHORT);
                                         snackbar.show();
                                     }
                                 });
@@ -188,6 +191,8 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
+    public void animate(){}
+
 
     @Override
     protected void onResume() {
