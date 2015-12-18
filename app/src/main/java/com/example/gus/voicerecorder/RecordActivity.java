@@ -63,11 +63,12 @@ public class RecordActivity extends AppCompatActivity {
                         EditDialog();
                         counter++;
                 } else {
-
-                    chronometer.stop();
-                    counter--;
-                    myAudioRecorder.stop();
-                    myAudioRecorder.release();
+                    if(chronometer != null && myAudioRecorder != null) {
+                        chronometer.stop();
+                        counter--;
+                        myAudioRecorder.stop();
+                        myAudioRecorder.release();
+                    }
                     startActivity(new Intent(getApplicationContext(), MainActivity.class));
                 }
             }

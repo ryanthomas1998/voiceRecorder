@@ -23,20 +23,23 @@
     <EditText
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:layout_margin="20dp"
-        android:textColor="#ffffff"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="30dp"
         android:background="#ffffff"
+        android:padding="10dp"
         android:layout_below="@+id/header"
         android:id="@+id/filename"/>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:layout_gravity="end|bottom"
-        android:weightSum="2"
+        android:weightSum="2.01"
         android:layout_below="@+id/filename"
         android:elevation="5dp"
         android:transitionName="bottom"
-        android:background="@color/colorPrimaryDark"
+        android:background="@color/colorAccent"
         android:id="@+id/buttonBar"
         >
         <Button
@@ -45,17 +48,22 @@
             android:background="#00000000"
             android:text="Yes"
             android:id="@+id/yes"
-            android:paddingRight="25dp"
             android:textAllCaps="false"
             android:textColor="#ffffff"
             android:textSize="20sp"
             android:layout_weight="1"/>
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight=".01"
+            android:background="#ffffff"
+            android:layout_margin="7dp"
+            ></LinearLayout>
         <Button
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:background="#00000000"
             android:text="No"
-            android:paddingLeft="15dp"
             android:id="@+id/no"
             android:textAllCaps="false"
             android:textColor="#ffffff"
