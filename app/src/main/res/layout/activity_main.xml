@@ -30,12 +30,14 @@ android:layout_height="match_parent" android:fitsSystemWindows="true"
         </ListView>
 
     </RelativeLayout>
+
     <RelativeLayout
+        android:id="@+id/reveal_view"
         android:layout_width="match_parent"
+        android:transitionName="toReveal"
         android:layout_height="match_parent"
-        android:visibility="invisible"
-        android:id="@+id/toFill"
-        android:background="@color/colorPrimary"></RelativeLayout>
+        android:background="@color/colorPrimary"
+        android:visibility="invisible"></RelativeLayout>
 
     <FrameLayout
         android:id="@+id/scene_root"
