@@ -19,6 +19,8 @@ import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.util.Pair;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.transition.Scene;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -108,7 +110,6 @@ public class MainActivity extends AppCompatActivity {
                 }else {
                     colorRevealShow(myView);
                     timesFunctionClicked++;
-
 
 
                 }
@@ -275,6 +276,7 @@ public class MainActivity extends AppCompatActivity {
         ListView list = (ListView) findViewById(R.id.filenames);
         list.invalidateViews();
         Intent received = getIntent();
+
 
         if(received.getStringExtra("act")!=null && received.getStringExtra("act").equals("record")) {
             View fabView = findViewById(R.id.record);

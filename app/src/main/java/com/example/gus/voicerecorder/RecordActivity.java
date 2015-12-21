@@ -26,6 +26,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
+import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.inputmethod.InputMethodManager;
@@ -106,10 +107,10 @@ public class RecordActivity extends AppCompatActivity {
         final View FileDialogView = factory.inflate(
                 R.layout.filedialog, null);
         EditText myEditText = (EditText) FileDialogView.findViewById(R.id.filename);
-                ((InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE))
-                .showSoftInput(myEditText, InputMethodManager.SHOW_FORCED);
+
         final AlertDialog FileDialog = new AlertDialog.Builder(this).create();
         FileDialog.setView(FileDialogView);
+        FileDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
         FileDialogView.findViewById(R.id.yes).setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -136,16 +137,9 @@ public class RecordActivity extends AppCompatActivity {
         });
 
         FileDialog.show();
-        counter--;
+
     }
 
-    @Override
-    public void onBackPressed(){
 
-
-//        Intent intent = new Intent(this, MainActivity.class);
-//        startActivityForResult(intent, 100);
-        super.onBackPressed();
-    }
 
 }
