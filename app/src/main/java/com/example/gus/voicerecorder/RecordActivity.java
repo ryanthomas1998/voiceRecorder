@@ -16,13 +16,17 @@ import android.os.Environment;
 import android.os.SystemClock;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.util.Pair;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Chronometer;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -56,6 +60,8 @@ public class RecordActivity extends AppCompatActivity {
 
         FloatingActionButton mic = (FloatingActionButton) findViewById(R.id.record);
         mic.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#ffffff")));
+        mic.setRippleColor(getResources().getColor(R.color.colorAccent));
+        final LinearLayout bottomBar = (LinearLayout) findViewById(R.id.bottomBar);
         mic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -69,7 +75,24 @@ public class RecordActivity extends AppCompatActivity {
                         myAudioRecorder.stop();
                         myAudioRecorder.release();
                     }
-                    startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                    Intent intent = new Intent(RecordActivity.this, MainActivity.class);
+                    intent.putExtra("act","record");
+
+                    ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(
+                            // the context of the activity
+                            RecordActivity.this,
+
+                            // For each shared element, add to this method a new Pair item,
+                            // which contains the reference of the view we are transitioning *from*,
+                            // and the value of the transitionName attribute
+
+                            new Pair<View, String>(v.findViewById(R.id.record),
+                                    "fab"),
+                            new Pair<View, String>(bottomBar,
+                                    "bottom")
+                    );
+
+                    startActivity(intent, options.toBundle());
                 }
             }
         });
@@ -111,5 +134,13 @@ public class RecordActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    public void onBackPressed(){
+
+
+//        Intent intent = new Intent(this, MainActivity.class);
+//        startActivityForResult(intent, 100);
+        super.onBackPressed();
+    }
 
 }

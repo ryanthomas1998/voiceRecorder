@@ -19,8 +19,9 @@
         <Button
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:background="#00000000"
+            android:background="?android:attr/selectableItemBackground"
             android:text="Function"
+            android:id="@+id/debug"
             android:paddingRight="25dp"
             android:textAllCaps="false"
             android:textColor="#ffffff"
@@ -29,7 +30,7 @@
         <Button
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:background="#00000000"
+            android:background="?android:attr/selectableItemBackground"
             android:text="Settings"
             android:paddingLeft="15dp"
             android:id="@+id/settings"
@@ -44,7 +45,6 @@
         app:layout_anchor="@id/bottomBar"
         android:id="@+id/record"
         android:transitionName="fab"
-
         app:layout_anchorGravity="bottom|center" android:src="@drawable/microphone" />
 
 </android.support.design.widget.CoordinatorLayout>

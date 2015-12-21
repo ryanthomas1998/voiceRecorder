@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
     <set xmlns:android="http://schemas.android.com/apk/res/android"
-        android:fillAfter="true">
+        android:fillAfter="true" >
 
         <scale
             android:duration="250"
@@ -13,4 +13,8 @@
             android:startOffset="50"
             android:toXScale="1.4"
             android:toYScale="1.4" />
+    <translate
+        android:toYDelta="-100"
+        android:duration="200"
+        />
     </set>
