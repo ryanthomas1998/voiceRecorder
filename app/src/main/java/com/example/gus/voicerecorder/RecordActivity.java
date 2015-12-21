@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -27,6 +28,7 @@ import android.view.View;
 import android.view.Window;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Chronometer;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -103,6 +105,9 @@ public class RecordActivity extends AppCompatActivity {
         LayoutInflater factory = LayoutInflater.from(this);
         final View FileDialogView = factory.inflate(
                 R.layout.filedialog, null);
+        EditText myEditText = (EditText) FileDialogView.findViewById(R.id.filename);
+                ((InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE))
+                .showSoftInput(myEditText, InputMethodManager.SHOW_FORCED);
         final AlertDialog FileDialog = new AlertDialog.Builder(this).create();
         FileDialog.setView(FileDialogView);
         FileDialogView.findViewById(R.id.yes).setOnClickListener(new View.OnClickListener() {
@@ -131,7 +136,7 @@ public class RecordActivity extends AppCompatActivity {
         });
 
         FileDialog.show();
-
+        counter--;
     }
 
     @Override

@@ -3,12 +3,14 @@ package com.example.gus.voicerecorder;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ValueAnimator;
+import android.annotation.TargetApi;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.media.MediaPlayer;
+import android.os.Build;
 import android.os.Environment;
 import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
@@ -19,6 +21,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.transition.Scene;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewAnimationUtils;
 import android.view.ViewGroup;
@@ -60,20 +63,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(final View v) {
                 final Animation anim = AnimationUtils.loadAnimation(MainActivity.this, R.anim.fab_forward);
                 fabView.startAnimation(anim);
-                final View myView = findViewById(R.id.reveal_view);
-                // get the center for the clipping circle
-                int cx = (myView.getLeft() + myView.getRight()) / 2;
-                int cy = myView.getHeight();
-
-                // get the final radius for the clipping circle
-                int finalRadius = myView.getWidth();
-
-                // create and start the animator for this view
-                // (the start radius is zero)
-                Animator anims =
-                        ViewAnimationUtils.createCircularReveal(myView, cx, cy, 0, finalRadius);
-                //myView.setVisibility(View.VISIBLE);
-               // anims.start();
+                colorRevealShow(findViewById(R.id.reveal_view));
 
                 final Handler handler = new Handler();
                 handler.postDelayed(new Runnable() {
@@ -98,7 +88,7 @@ public class MainActivity extends AppCompatActivity {
 
                         startActivity(intent, options.toBundle());
                     }
-                }, 300);
+                }, 200);
 
             }
 
@@ -110,52 +100,17 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                final View myView = findViewById(R.id.reveal_view);
-                View bottomBar = findViewById(R.id.scene_root);
+
 
                 if(timesFunctionClicked>0){
-
-                    // get the center for the clipping circle
-                    int cx = myView.getWidth() / 2;
-                    int cy = myView.getHeight();
-
-                    // get the initial radius for the clipping circle
-                    int initialRadius = myView.getWidth();
-
-                    // create the animation (the final radius is zero)
-                    Animator  anim =
-                            ViewAnimationUtils.createCircularReveal(myView, cx, cy, initialRadius*4, 0);
-
-                    // make the view invisible when the animation is done
-                    anim.addListener(new AnimatorListenerAdapter() {
-                        @Override
-                        public void onAnimationEnd(Animator animation) {
-                            super.onAnimationEnd(animation);
-                            myView.setVisibility(View.INVISIBLE);
-                        }
-                    });
-
-                    // start the animation
-                    anim.start();
+                    colorRevealHide(myView);
                     timesFunctionClicked--;
                 }else {
+                    colorRevealShow(myView);
                     timesFunctionClicked++;
 
 
-                    // get the center for the clipping circle
-                    int cx = (myView.getLeft() + myView.getRight()) / 2;
-                    int cy = myView.getHeight();
 
-                    // get the final radius for the clipping circle
-                    int finalRadius = myView.getWidth();
-
-                    // create and start the animator for this view
-                    // (the start radius is zero)
-                    Animator anim =
-                            ViewAnimationUtils.createCircularReveal(myView, cx, cy, 0, finalRadius*4);
-                    myView.setVisibility(View.VISIBLE);
-                    anim.setDuration(1000);
-                    anim.setInterpolator(AnimationUtils.loadInterpolator(getApplicationContext(),android.R.anim.accelerate_decelerate_interpolator));
-                    anim.start();
                 }
             }
         });
@@ -164,11 +119,6 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.settings).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                int cx = v.getRight() - 30;
-//                int cy = v.getBottom() - 60;
-//                int finalRadius = Math.max(v.getWidth(), v.getHeight());
-//                Animator animator = ViewAnimationUtils.createCircularReveal(v, cx, cy, 0, finalRadius);
-//                v.startAnimation(anims);
 
                 final Animation anim = AnimationUtils.loadAnimation(MainActivity.this, R.anim.fab_back);
                 fabView.startAnimation(anim);
@@ -274,6 +224,49 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    public void colorRevealShow(final View toReveal){
+        // get the center for the clipping circle
+        int cx = (toReveal.getLeft() + toReveal.getRight()) / 2;
+        int cy = toReveal.getHeight();
+
+        // get the final radius for the clipping circle
+        int finalRadius = toReveal.getWidth();
+
+        // create and start the animator for this view
+        // (the start radius is zero)
+        Animator anim =
+                ViewAnimationUtils.createCircularReveal(toReveal, cx, cy, 0, finalRadius*4);
+        toReveal.setVisibility(View.VISIBLE);
+        anim.setDuration(400);
+        anim.setInterpolator(AnimationUtils.loadInterpolator(getApplicationContext(), android.R.interpolator.accelerate_quad));
+        anim.start();
+    }
+    public void colorRevealHide(final View toReveal){
+        // get the center for the clipping circle
+        int cx = toReveal.getWidth() / 2;
+        int cy = toReveal.getHeight();
+
+        // get the initial radius for the clipping circle
+        int initialRadius = toReveal.getWidth();
+
+        // create the animation (the final radius is zero)
+        Animator  anim =
+                ViewAnimationUtils.createCircularReveal(toReveal, cx, cy, initialRadius*4, 0);
+
+        // make the view invisible when the animation is done
+        anim.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                super.onAnimationEnd(animation);
+                toReveal.setVisibility(View.INVISIBLE);
+            }
+        });
+        anim.setDuration(400);
+        anim.setInterpolator(AnimationUtils.loadInterpolator(getApplicationContext(), android.R.interpolator.accelerate_quad));
+
+        anim.start();
+    }
+
 
     @Override
     protected void onResume() {
@@ -283,7 +276,7 @@ public class MainActivity extends AppCompatActivity {
         list.invalidateViews();
         Intent received = getIntent();
 
-        if(received.getStringExtra("act")!=null && received.getStringExtra("act").equals("record")){
+        if(received.getStringExtra("act")!=null && received.getStringExtra("act").equals("record")) {
             View fabView = findViewById(R.id.record);
             Animation anim = AnimationUtils.loadAnimation(MainActivity.this, R.anim.fab_back);
             fabView.startAnimation(anim);
@@ -292,5 +285,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
+
+
 }
 
