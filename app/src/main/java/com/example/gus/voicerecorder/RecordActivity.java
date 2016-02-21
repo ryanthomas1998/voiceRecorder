@@ -142,8 +142,8 @@ public class RecordActivity extends AppCompatActivity {
     }
     private void setupChart(){
 
-        // Creating an  XYSeries for Visits
-        visitsSeries = new XYSeries("Unique Visitors");
+        // Creating an  XYSeries for Sound
+        visitsSeries = new XYSeries("");
 
         // Creating a dataset to hold each series
         dataset = new XYMultipleSeriesDataset();
@@ -155,23 +155,42 @@ public class RecordActivity extends AppCompatActivity {
         visitsRenderer.setColor(getResources().getColor(R.color.colorAccent));
         visitsRenderer.setPointStyle(PointStyle.CIRCLE);
         visitsRenderer.setFillPoints(true);
+        visitsRenderer.setDisplayChartValues(false);
         visitsRenderer.setLineWidth(2);
+
 
 
         // Creating a XYMultipleSeriesRenderer to customize the whole chart
         multiRenderer = new XYMultipleSeriesRenderer();
 
-        multiRenderer.setZoomButtonsVisible(true);
-        multiRenderer.setMargins(new int[]{0,0,0,0});
+
+        multiRenderer.setMargins(new int[]{0, 0, 0, 0});
+        multiRenderer.setPanEnabled(false);
+        multiRenderer.setShowLegend(false);
+        multiRenderer.setChartTitle("");
+        multiRenderer.setFitLegend(true);
+
+        //Eliminate the Shite
         multiRenderer.setApplyBackgroundColor(true);
+        multiRenderer.setXTitle("");
+        multiRenderer.setShowLabels(false);
+        multiRenderer.setShowAxes(false);
+        
         multiRenderer.setMarginsColor(Color.TRANSPARENT);
         multiRenderer.setBackgroundColor(Color.TRANSPARENT);
+        multiRenderer.setXLabelsColor(Color.TRANSPARENT);
+        multiRenderer.setYLabelsColor(0, Color.TRANSPARENT);
+        multiRenderer.setGridColor(Color.TRANSPARENT);
+        multiRenderer.setXLabelsPadding(0);
+        multiRenderer.setYLabelsPadding(0);
+
+        //Establish Beginning Dimensions
         multiRenderer.setXAxisMin(0);
         multiRenderer.setXAxisMax(10);
         multiRenderer.setYAxisMin(0);
         multiRenderer.setYAxisMax(0);
-        multiRenderer.setXLabelsColor(Color.TRANSPARENT);
-        multiRenderer.setYLabelsColor(0,Color.TRANSPARENT);
+
+
         //Make the bar graphs touching
         multiRenderer.setBarSpacing(0);
 
