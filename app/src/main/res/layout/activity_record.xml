@@ -34,14 +34,12 @@ android:layout_height="match_parent" android:fitsSystemWindows="true"
             android:textColor="@color/recordText"
             android:format="%s"/>
 
-        <ImageView
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:src="@drawable/arty"
-            android:layout_marginTop="30dp"
-            android:id="@+id/mic"
-            android:layout_below="@id/chrono"
-            />
+        <com.github.mikephil.charting.charts.BarChart
+            android:id="@+id/chart"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_marginTop="15dp"
+            android:layout_below="@+id/chrono"/>
     </RelativeLayout>
 
     <FrameLayout
