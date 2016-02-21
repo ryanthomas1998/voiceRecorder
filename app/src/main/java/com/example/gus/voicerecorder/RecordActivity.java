@@ -14,6 +14,7 @@ import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.media.MediaRecorder;
 import android.os.Environment;
+import android.os.Handler;
 import android.os.SystemClock;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
@@ -23,6 +24,7 @@ import android.support.v4.util.Pair;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
@@ -40,12 +42,16 @@ import android.widget.Toast;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class RecordActivity extends AppCompatActivity {
 
     private int counter = 0;
     public Chronometer chronometer;
     public MediaRecorder myAudioRecorder ;
+    public boolean recording;
+    public Timer timer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,17 +75,19 @@ public class RecordActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (counter == 0) {
-                        EditDialog();
-                        counter++;
+                    EditDialog();
+                    counter++;
                 } else {
-                    if(chronometer != null && myAudioRecorder != null) {
+                    if (chronometer != null && myAudioRecorder != null) {
+                        recording = false;
+                        timer.cancel();
                         chronometer.stop();
                         counter--;
                         myAudioRecorder.stop();
                         myAudioRecorder.release();
                     }
                     Intent intent = new Intent(RecordActivity.this, MainActivity.class);
-                    intent.putExtra("act","record");
+                    intent.putExtra("act", "record");
 
                     ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(
                             // the context of the activity
@@ -97,10 +105,22 @@ public class RecordActivity extends AppCompatActivity {
 
                     startActivity(intent, options.toBundle());
                 }
+
             }
         });
 
 
+
+
+    }
+    public void recordingGraph(){
+        timer = new Timer();
+        timer.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                Log.d("Record Volume",Integer.toString(myAudioRecorder.getMaxAmplitude()));
+            }
+        }, 0, 300);//put here time 1000 milliseconds=1 second
     }
     public void EditDialog() {
         LayoutInflater factory = LayoutInflater.from(this);
@@ -124,6 +144,9 @@ public class RecordActivity extends AppCompatActivity {
                 myAudioRecorder.start();
                 chronometer.setBase(SystemClock.elapsedRealtime());
                 chronometer.start();
+                recording=true;
+                    recordingGraph();
+
                 FileDialog.dismiss();
             }
         });
@@ -140,6 +163,25 @@ public class RecordActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event)  {
+        if (Integer.parseInt(android.os.Build.VERSION.SDK) > 5
+                && keyCode == KeyEvent.KEYCODE_BACK
+                && event.getRepeatCount() == 0) {
+            Log.d("CDA", "onKeyDown Called");
+            onBackPressed();
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
 
+
+    @Override
+    public void onBackPressed() {
+        Log.d("CDA", "onBackPressed Called");
+        Intent setIntent = new Intent(RecordActivity.this,MainActivity.class);
+        setIntent.putExtra("act","record");
+        startActivity(setIntent);
+    }
 
 }
