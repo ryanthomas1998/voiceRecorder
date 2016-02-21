@@ -50,18 +50,19 @@ public class RecordActivity extends AppCompatActivity {
     public MediaRecorder myAudioRecorder ;
     public boolean recording;
     public Timer timer;
-//    public BarChart mChart;
-//    ArrayList<BarEntry> entries = new ArrayList<BarEntry>();
-//    ArrayList<String > labels = new ArrayList<String>();
-//    BarDataSet dataSet;
-//    BarData data;
     private GraphicalView mChart;
 
     private XYSeries visitsSeries ;
+    private XYSeries secondSeries;
+
     private XYMultipleSeriesDataset dataset;
+    private XYMultipleSeriesDataset Sdataset;
+
+    XYMultipleSeriesDataset multiDateSet;
 
     private XYSeriesRenderer visitsRenderer;
     private XYMultipleSeriesRenderer multiRenderer;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,7 +73,7 @@ public class RecordActivity extends AppCompatActivity {
         chronometer = (Chronometer) findViewById(R.id.chrono);
 
         // Setting up chart
-        setupChart();
+        setupTopChart();
 
 
         myAudioRecorder = new MediaRecorder();
@@ -127,15 +128,25 @@ public class RecordActivity extends AppCompatActivity {
 
 
     }
-    private void setupChart(){
+    private void setupTopChart(){
 
         // Creating an  XYSeries for Sound
         visitsSeries = new XYSeries("");
+        secondSeries = new XYSeries("");
 
         // Creating a dataset to hold each series
         dataset = new XYMultipleSeriesDataset();
+        Sdataset = new XYMultipleSeriesDataset();
+
+
         // Adding Visits Series to the dataset
         dataset.addSeries(visitsSeries);
+        Sdataset.addSeries(secondSeries);
+
+        //Adding datasets together
+        multiDateSet = new XYMultipleSeriesDataset();
+        multiDateSet.addSeries(visitsSeries);
+        multiDateSet.addSeries(secondSeries);
 
         // Creating XYSeriesRenderer to customize visitsSeries
         visitsRenderer = new XYSeriesRenderer();
@@ -143,7 +154,7 @@ public class RecordActivity extends AppCompatActivity {
         visitsRenderer.setPointStyle(PointStyle.CIRCLE);
         visitsRenderer.setFillPoints(true);
         visitsRenderer.setDisplayChartValues(false);
-        visitsRenderer.setLineWidth(2);
+        visitsRenderer.setLineWidth(10);
 
 
 
@@ -155,7 +166,7 @@ public class RecordActivity extends AppCompatActivity {
         multiRenderer.setPanEnabled(false);
         multiRenderer.setShowLegend(false);
         multiRenderer.setChartTitle("");
-        multiRenderer.setFitLegend(true);
+        //multiRenderer.setFitLegend(true);
 
         //Eliminate the Shite
         multiRenderer.setApplyBackgroundColor(true);
@@ -181,25 +192,29 @@ public class RecordActivity extends AppCompatActivity {
         //Make the bar graphs touching
         multiRenderer.setBarSpacing(0);
 
+
         // Adding visitsRenderer to multipleRenderer
         // Note: The order of adding dataseries to dataset and renderers to multipleRenderer
         // should be same
         multiRenderer.addSeriesRenderer(visitsRenderer);
+        multiRenderer.addSeriesRenderer(visitsRenderer);
 
-        // Getting a reference to LinearLayout of the MainActivity Layout
-        LinearLayout chartContainer = (LinearLayout) findViewById(R.id.chart);
+        // Getting a reference to LinearLayout of the RecordActivity Layout
+        LinearLayout chartContainer = (LinearLayout) findViewById(R.id.chartTop);
 
-        mChart = (GraphicalView) ChartFactory.getBarChartView(getBaseContext(), dataset, multiRenderer, org.achartengine.chart.BarChart.Type.DEFAULT);
+
+        mChart = (GraphicalView) ChartFactory.getBarChartView(getBaseContext(), multiDateSet, multiRenderer, org.achartengine.chart.BarChart.Type.DEFAULT);
 
         // Adding the Line Chart to the LinearLayout
         chartContainer.addView(mChart);
     }
+
     private class ChartTask extends AsyncTask<Void, String, Void> {
 
         // Generates dummy data in a non-ui thread
         @Override
         protected Void doInBackground(Void... params) {
-            int i = 0,yMax=0;
+            int i = 0,yMax=0,yMin=0;
             try{
                 do{
                     String [] values = new String[2];
@@ -208,6 +223,10 @@ public class RecordActivity extends AppCompatActivity {
                     if(maxAmp>yMax){
                         yMax =maxAmp;
                         multiRenderer.setYAxisMax(yMax);
+                    }
+                    if(maxAmp*-1<yMin){
+                        yMin=maxAmp*-1;
+                        multiRenderer.setYAxisMin(yMin);
                     }
                     if(i>10){
                         multiRenderer.setXAxisMin(multiRenderer.getXAxisMin()+1);
@@ -231,11 +250,14 @@ public class RecordActivity extends AppCompatActivity {
         @Override
         protected void onProgressUpdate(String... values) {
             visitsSeries.add(Integer.parseInt(values[0]), Integer.parseInt(values[1]));
-            Log.d("test",values[1]);
+            secondSeries.add(Integer.parseInt(values[0])-.5, Integer.parseInt(values[1])*-1);
+            Log.d("test", values[1]);
+            Log.d("x",values[0]);
             mChart.repaint();
+
         }
     }
-    
+
 
     public void EditDialog() {
         LayoutInflater factory = LayoutInflater.from(this);
