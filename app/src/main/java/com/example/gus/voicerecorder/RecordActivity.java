@@ -253,7 +253,6 @@ public class RecordActivity extends AppCompatActivity {
             visitsSeries.add(Integer.parseInt(values[0]), Integer.parseInt(values[1]));
             secondSeries.add(Integer.parseInt(values[0])-1, Integer.parseInt(values[1])*-1);
             Log.d("test", values[1]);
-            Log.d("x",values[0]);
             mChart.repaint();
 
         }
