@@ -181,6 +181,7 @@ public class RecordActivity extends AppCompatActivity {
         multiRenderer.setGridColor(Color.TRANSPARENT);
         multiRenderer.setXLabelsPadding(0);
         multiRenderer.setYLabelsPadding(0);
+        multiRenderer.setBarWidth(100);
 
         //Establish Beginning Dimensions
         multiRenderer.setXAxisMin(0);
@@ -238,7 +239,7 @@ public class RecordActivity extends AppCompatActivity {
                     values[1] = Integer.toString(maxAmp);
 
                     publishProgress(values);
-                    Thread.sleep(100);
+                    Thread.sleep(50);
 
                     i++;
                 }while(recording);
@@ -250,7 +251,7 @@ public class RecordActivity extends AppCompatActivity {
         @Override
         protected void onProgressUpdate(String... values) {
             visitsSeries.add(Integer.parseInt(values[0]), Integer.parseInt(values[1]));
-            secondSeries.add(Integer.parseInt(values[0])-.5, Integer.parseInt(values[1])*-1);
+            secondSeries.add(Integer.parseInt(values[0])-1, Integer.parseInt(values[1])*-1);
             Log.d("test", values[1]);
             Log.d("x",values[0]);
             mChart.repaint();
