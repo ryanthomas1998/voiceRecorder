@@ -70,22 +70,9 @@ public class RecordActivity extends AppCompatActivity {
         setContentView(R.layout.activity_record);
 
         chronometer = (Chronometer) findViewById(R.id.chrono);
-//        mChart = (BarChart) findViewById(R.id.chart);
-//        mChart.setDrawGridBackground(false);
-//        mChart.setDescription("");
-//        mChart.setVisibleYRangeMaximum((float) 32767, YAxis.AxisDependency.LEFT);
-//
-//
-//         dataSet = new BarDataSet(entries,"DataSet");
-//        dataSet.setColors(ColorTemplate.COLORFUL_COLORS);
-//        data = new BarData(labels,dataSet);
-//
-//        mChart.setData(data);
-//        mChart.invalidate();
 
         // Setting up chart
         setupChart();
-
 
 
         myAudioRecorder = new MediaRecorder();
@@ -175,7 +162,7 @@ public class RecordActivity extends AppCompatActivity {
         multiRenderer.setXTitle("");
         multiRenderer.setShowLabels(false);
         multiRenderer.setShowAxes(false);
-        
+
         multiRenderer.setMarginsColor(Color.TRANSPARENT);
         multiRenderer.setBackgroundColor(Color.TRANSPARENT);
         multiRenderer.setXLabelsColor(Color.TRANSPARENT);
@@ -248,33 +235,7 @@ public class RecordActivity extends AppCompatActivity {
             mChart.repaint();
         }
     }
-
-    public void recordingGraph() {
-
-        timer = new Timer();
-        timer.scheduleAtFixedRate(new TimerTask() {
-            @Override
-            public void run() {
-
-               // Log.d("Record Volume", Float.toString((float) maxAmp));
-
-//                BarEntry bob = new BarEntry((float) (maxAmp / 10000)
-//                        , (int) (SystemClock.elapsedRealtime() - chronometer.getBase()));
-//               // BarEntry bob = new BarEntry((float) 1
-//               //         , (int) (SystemClock.elapsedRealtime() - chronometer.getBase()));
-//                //entries.add(bob);
-//
-//                dataSet.addEntry(bob);
-//                data.addEntry(bob ,1);
-//                labels.add(Long.toString(SystemClock.elapsedRealtime() - chronometer.getBase()));
-//
-//                mChart.notifyDataSetChanged();
-//                mChart.moveViewToY(mChart.getData().getYValCount(), YAxis.AxisDependency.LEFT);
-//                mChart.moveViewToX((mChart.getData().getXValCount()));
-            }
-        }, 0, 1000);//put here time 1000 milliseconds=1 second
-    }
-
+    
 
     public void EditDialog() {
         LayoutInflater factory = LayoutInflater.from(this);
