@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.media.MediaRecorder;
+import android.os.AsyncTask;
 import android.os.Environment;
 import android.os.SystemClock;
 import android.support.design.widget.FloatingActionButton;
@@ -29,7 +30,16 @@ import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.utils.ColorTemplate;
 
+import org.achartengine.ChartFactory;
+import org.achartengine.GraphicalView;
+import org.achartengine.chart.PointStyle;
+import org.achartengine.model.XYMultipleSeriesDataset;
+import org.achartengine.model.XYSeries;
+import org.achartengine.renderer.XYMultipleSeriesRenderer;
+import org.achartengine.renderer.XYSeriesRenderer;
+
 import java.util.ArrayList;
+import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -40,12 +50,18 @@ public class RecordActivity extends AppCompatActivity {
     public MediaRecorder myAudioRecorder ;
     public boolean recording;
     public Timer timer;
-    public BarChart mChart;
-    public int time;
-    ArrayList<BarEntry> entries = new ArrayList<BarEntry>();
-    ArrayList<String > labels = new ArrayList<String>();
-    BarDataSet dataSet;
-    BarData data;
+//    public BarChart mChart;
+//    ArrayList<BarEntry> entries = new ArrayList<BarEntry>();
+//    ArrayList<String > labels = new ArrayList<String>();
+//    BarDataSet dataSet;
+//    BarData data;
+    private GraphicalView mChart;
+
+    private XYSeries visitsSeries ;
+    private XYMultipleSeriesDataset dataset;
+
+    private XYSeriesRenderer visitsRenderer;
+    private XYMultipleSeriesRenderer multiRenderer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,18 +70,23 @@ public class RecordActivity extends AppCompatActivity {
         setContentView(R.layout.activity_record);
 
         chronometer = (Chronometer) findViewById(R.id.chrono);
-        mChart = (BarChart) findViewById(R.id.chart);
-        mChart.setDrawGridBackground(false);
-        mChart.setDescription("");
-        mChart.setVisibleYRangeMaximum((float) 32767, YAxis.AxisDependency.LEFT);
+//        mChart = (BarChart) findViewById(R.id.chart);
+//        mChart.setDrawGridBackground(false);
+//        mChart.setDescription("");
+//        mChart.setVisibleYRangeMaximum((float) 32767, YAxis.AxisDependency.LEFT);
+//
+//
+//         dataSet = new BarDataSet(entries,"DataSet");
+//        dataSet.setColors(ColorTemplate.COLORFUL_COLORS);
+//        data = new BarData(labels,dataSet);
+//
+//        mChart.setData(data);
+//        mChart.invalidate();
+
+        // Setting up chart
+        setupChart();
 
 
-         dataSet = new BarDataSet(entries,"DataSet");
-        dataSet.setColors(ColorTemplate.COLORFUL_COLORS);
-        data = new BarData(labels,dataSet);
-
-        mChart.setData(data);
-        mChart.invalidate();
 
         myAudioRecorder = new MediaRecorder();
 
@@ -88,7 +109,7 @@ public class RecordActivity extends AppCompatActivity {
                 } else {
                     if (chronometer != null && myAudioRecorder != null) {
                         recording = false;
-                        timer.cancel();
+                       // timer.cancel();
                         chronometer.stop();
                         counter--;
                         myAudioRecorder.stop();
@@ -119,6 +140,95 @@ public class RecordActivity extends AppCompatActivity {
 
 
     }
+    private void setupChart(){
+
+        // Creating an  XYSeries for Visits
+        visitsSeries = new XYSeries("Unique Visitors");
+
+        // Creating a dataset to hold each series
+        dataset = new XYMultipleSeriesDataset();
+        // Adding Visits Series to the dataset
+        dataset.addSeries(visitsSeries);
+
+        // Creating XYSeriesRenderer to customize visitsSeries
+        visitsRenderer = new XYSeriesRenderer();
+        visitsRenderer.setColor(getResources().getColor(R.color.colorAccent));
+        visitsRenderer.setPointStyle(PointStyle.CIRCLE);
+        visitsRenderer.setFillPoints(true);
+        visitsRenderer.setLineWidth(2);
+
+
+        // Creating a XYMultipleSeriesRenderer to customize the whole chart
+        multiRenderer = new XYMultipleSeriesRenderer();
+
+        multiRenderer.setZoomButtonsVisible(true);
+        multiRenderer.setMargins(new int[]{0,0,0,0});
+        multiRenderer.setApplyBackgroundColor(true);
+        multiRenderer.setMarginsColor(Color.TRANSPARENT);
+        multiRenderer.setBackgroundColor(Color.TRANSPARENT);
+        multiRenderer.setXAxisMin(0);
+        multiRenderer.setXAxisMax(10);
+        multiRenderer.setYAxisMin(0);
+        multiRenderer.setYAxisMax(0);
+        multiRenderer.setXLabelsColor(Color.TRANSPARENT);
+        multiRenderer.setYLabelsColor(0,Color.TRANSPARENT);
+        //Make the bar graphs touching
+        multiRenderer.setBarSpacing(0);
+
+        // Adding visitsRenderer to multipleRenderer
+        // Note: The order of adding dataseries to dataset and renderers to multipleRenderer
+        // should be same
+        multiRenderer.addSeriesRenderer(visitsRenderer);
+
+        // Getting a reference to LinearLayout of the MainActivity Layout
+        LinearLayout chartContainer = (LinearLayout) findViewById(R.id.chart);
+
+        mChart = (GraphicalView) ChartFactory.getBarChartView(getBaseContext(), dataset, multiRenderer, org.achartengine.chart.BarChart.Type.DEFAULT);
+
+        // Adding the Line Chart to the LinearLayout
+        chartContainer.addView(mChart);
+    }
+    private class ChartTask extends AsyncTask<Void, String, Void> {
+
+        // Generates dummy data in a non-ui thread
+        @Override
+        protected Void doInBackground(Void... params) {
+            int i = 0,yMax=0;
+            try{
+                do{
+                    String [] values = new String[2];
+
+                    int maxAmp = myAudioRecorder.getMaxAmplitude();
+                    if(maxAmp>yMax){
+                        yMax =maxAmp;
+                        multiRenderer.setYAxisMax(yMax);
+                    }
+                    if(i>10){
+                        multiRenderer.setXAxisMin(multiRenderer.getXAxisMin()+1);
+                        multiRenderer.setXAxisMax(multiRenderer.getXAxisMax()+1);
+                    }
+
+                    Log.d("record",Integer.toString(maxAmp));
+                    values[0] = Integer.toString(i);
+                    values[1] = Integer.toString(maxAmp);
+
+                    publishProgress(values);
+                    Thread.sleep(100);
+
+                    i++;
+                }while(recording);
+            }catch(Exception e){ }
+            return null;
+        }
+
+        // Plotting generated data in the graph
+        @Override
+        protected void onProgressUpdate(String... values) {
+            visitsSeries.add(Integer.parseInt(values[0]), Integer.parseInt(values[1]));
+            Log.d("test",values[1]);
+            mChart.repaint();
+        }
+    }
 
     public void recordingGraph() {
 
@@ -126,19 +236,22 @@ public class RecordActivity extends AppCompatActivity {
         timer.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
-                int maxAmp = myAudioRecorder.getMaxAmplitude();
-                Log.d("Record Volume", Float.toString((float) maxAmp));
+
+               // Log.d("Record Volume", Float.toString((float) maxAmp));
 
 //                BarEntry bob = new BarEntry((float) (maxAmp / 10000)
 //                        , (int) (SystemClock.elapsedRealtime() - chronometer.getBase()));
-                BarEntry bob = new BarEntry((float) 1
-                        , (int) (SystemClock.elapsedRealtime() - chronometer.getBase()));
-                entries.add(bob);
-                labels.add(Long.toString(SystemClock.elapsedRealtime() - chronometer.getBase()));
-
-                mChart.notifyDataSetChanged();
-                mChart.moveViewToY(mChart.getData().getYValCount(), YAxis.AxisDependency.LEFT);
-                mChart.moveViewToX((mChart.getData().getXValCount()));
+//               // BarEntry bob = new BarEntry((float) 1
+//               //         , (int) (SystemClock.elapsedRealtime() - chronometer.getBase()));
+//                //entries.add(bob);
+//
+//                dataSet.addEntry(bob);
+//                data.addEntry(bob ,1);
+//                labels.add(Long.toString(SystemClock.elapsedRealtime() - chronometer.getBase()));
+//
+//                mChart.notifyDataSetChanged();
+//                mChart.moveViewToY(mChart.getData().getYValCount(), YAxis.AxisDependency.LEFT);
+//                mChart.moveViewToX((mChart.getData().getXValCount()));
             }
         }, 0, 1000);//put here time 1000 milliseconds=1 second
     }
@@ -167,7 +280,8 @@ public class RecordActivity extends AppCompatActivity {
                 chronometer.setBase(SystemClock.elapsedRealtime());
                 chronometer.start();
                 recording=true;
-                    recordingGraph();
+                // Start plotting chart
+                new ChartTask().execute();
 
                 FileDialog.dismiss();
             }

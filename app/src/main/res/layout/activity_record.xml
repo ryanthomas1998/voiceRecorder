@@ -34,12 +34,15 @@ android:layout_height="match_parent" android:fitsSystemWindows="true"
             android:textColor="@color/recordText"
             android:format="%s"/>
 
-        <com.github.mikephil.charting.charts.BarChart
+        <LinearLayout
             android:id="@+id/chart"
+            android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="200dp"
             android:layout_marginTop="15dp"
-            android:layout_below="@+id/chrono"/>
+            android:layout_below="@+id/chrono">
+
+        </LinearLayout>
     </RelativeLayout>
 
     <FrameLayout
