@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
+import android.media.Image;
 import android.media.MediaRecorder;
 import android.os.AsyncTask;
 import android.os.Environment;
@@ -20,6 +21,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Chronometer;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -49,7 +51,9 @@ public class RecordActivity extends AppCompatActivity {
     public Chronometer chronometer;
     public MediaRecorder myAudioRecorder ;
     public boolean recording;
+    public boolean paused=false;
     public Timer timer;
+    public String fileName="";
     private GraphicalView mChart;
 
     private XYSeries visitsSeries ;
@@ -87,45 +91,63 @@ public class RecordActivity extends AppCompatActivity {
         mic.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#ffffff")));
         mic.setRippleColor(getResources().getColor(R.color.colorAccent));
 
-        final LinearLayout bottomBar = (LinearLayout) findViewById(R.id.bottomBar);
-        mic.setOnClickListener(new View.OnClickListener() {
+        (findViewById(R.id.pause_record)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (counter == 0) {
-                    EditDialog();
-                    counter++;
-                } else {
-                    if (chronometer != null && myAudioRecorder != null) {
-                        recording = false;
-                       // timer.cancel();
-                        chronometer.stop();
-                        counter--;
-                        myAudioRecorder.stop();
-                        myAudioRecorder.release();
-                    }
-                    Intent intent = new Intent(RecordActivity.this, MainActivity.class);
-                    intent.putExtra("act", "record");
 
-                    ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(
-                            // the context of the activity
-                            RecordActivity.this,
-
-                            // For each shared element, add to this method a new Pair item,
-                            // which contains the reference of the view we are transitioning *from*,
-                            // and the value of the transitionName attribute
-
-                            new Pair<View, String>(v.findViewById(R.id.record),
-                                    "fab"),
-                            new Pair<View, String>(bottomBar,
-                                    "bottom")
-                    );
-
-                    startActivity(intent, options.toBundle());
-                }
 
             }
         });
 
+        (findViewById(R.id.stop_record)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {stopRecording(v);}
+        });
+        final LinearLayout bottomBar = (LinearLayout) findViewById(R.id.bottomBar);
+        mic.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                stopRecording(v);
+
+            }
+        });
+
+
+    }
+    public void stopRecording(View v){
+        if (counter == 0) {
+            EditDialog();
+            counter++;
+        } else if (chronometer != null && myAudioRecorder != null && recording) {
+                recording = false;
+                // timer.cancel();
+                chronometer.stop();
+                counter--;
+                myAudioRecorder.stop();
+                myAudioRecorder.release();
+
+            Intent intent = new Intent(RecordActivity.this, MainActivity.class);
+            intent.putExtra("act", "record");
+
+//            ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(
+//                    // the context of the activity
+//                    RecordActivity.this,
+//
+//                    // For each shared element, add to this method a new Pair item,
+//                    // which contains the reference of the view we are transitioning *from*,
+//                    // and the value of the transitionName attribute
+//
+//                    new Pair<View, String>(v.findViewById(R.id.record),
+//                            "fab"),
+//                    new Pair<View, String>(v.findViewById(R.id.bottomBar),
+//                            "bottom")
+//            );
+
+
+
+
+            startActivity(intent);
+        }
 
     }
     private void setupTopChart(){
@@ -251,7 +273,7 @@ public class RecordActivity extends AppCompatActivity {
         @Override
         protected void onProgressUpdate(String... values) {
             visitsSeries.add(Integer.parseInt(values[0]), Integer.parseInt(values[1]));
-            secondSeries.add(Integer.parseInt(values[0])-1, Integer.parseInt(values[1])*-1);
+            secondSeries.add(Integer.parseInt(values[0]) - 1, Integer.parseInt(values[1]) * -1);
             Log.d("test", values[1]);
             mChart.repaint();
 
@@ -272,6 +294,7 @@ public class RecordActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View v) {
+                fileName=((TextView) FileDialogView.findViewById(R.id.filename)).getText().toString() + ".mp3";
                 myAudioRecorder.setOutputFile(Environment.getExternalStorageDirectory().getAbsolutePath() + "/VoiceRecorder/" + ((TextView) FileDialogView.findViewById(R.id.filename)).getText().toString() + ".mp3");
                 try {
                     myAudioRecorder.prepare();

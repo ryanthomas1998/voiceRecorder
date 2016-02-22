@@ -19,7 +19,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".RecordActivity" android:theme="@style/AppThemeNoAction" >
-
+            </activity>
+        <activity android:name=".SettingsActivity" >
         </activity>
     </application>
 

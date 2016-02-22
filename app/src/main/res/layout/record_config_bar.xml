@@ -16,12 +16,14 @@
         android:orientation="horizontal"
         android:id="@+id/bottomBar"
         >
+
         <ImageButton
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="?android:attr/selectableItemBackground"
-            android:src="@drawable/pause"
+            android:id="@+id/stop_record"
+            android:src="@drawable/stop"
             />
         <ImageButton
             android:layout_width="0dp"
@@ -31,9 +33,13 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="?android:attr/selectableItemBackground"
-            android:src="@drawable/stop"
+            android:id="@+id/pause_record"
+            android:src="@drawable/menu"
+            android:adjustViewBounds="true"
+            android:padding="25dp"
+            android:scaleType="fitCenter"
             />
+
 
     </LinearLayout>
     <android.support.design.widget.FloatingActionButton

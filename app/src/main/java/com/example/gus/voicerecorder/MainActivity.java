@@ -125,8 +125,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                final Animation anim = AnimationUtils.loadAnimation(MainActivity.this, R.anim.fab_back);
-                fabView.startAnimation(anim);
+               startActivity(new Intent(MainActivity.this,SettingsActivity.class));
 
             }
         });
@@ -153,85 +152,6 @@ public class MainActivity extends AppCompatActivity {
         // specify an adapter (see also next example)
         mAdapter = new fileListAdapter(filenames);
         mRecyclerView.setAdapter(mAdapter);
-
-
-
-//        ListView rows = (ListView) findViewById(R.id.filenames);
-//        rows.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> parent, View view, int p, long id) {
-//                try {
-//                    final int position = p;
-//                    String path = filenames.get(position);
-//                    gus.setDataSource(root + "/" + path);
-//                    gus.prepare();
-//                    gus.start();
-//
-//                } catch (IOException e) {
-//                    e.printStackTrace();
-//                } catch (IllegalStateException e) {
-//                    e.printStackTrace();
-//                }
-//
-//                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-//                builder.setPositiveButton("Close", new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialog, int which) {
-//                        gus.stop();
-//                        gus.release();
-//
-//                    }
-//                });
-//
-//                builder.setTitle("Playing Recording");
-//                AlertDialog dialog = builder.create();
-//                dialog.show();
-//
-//            }
-//        });
-//
-//        ((ListView) findViewById(R.id.filenames)).setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-//            @Override
-//            public boolean onItemLongClick(AdapterView<?> parent, View view, int p, long id) {
-//                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-//                final int position = p;
-//                builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialog, int which) {
-//                        final String dFile = filenames.get(position);
-//                        Log.d("filename", dFile);
-//                        File delFile = new File(root + "/" + dFile);
-//                        delFile.delete();
-//
-//                        Snackbar snackbar = Snackbar
-//                                .make(findViewById(R.id.coordinatorLayout), dFile + " is deleted", Snackbar.LENGTH_LONG)
-//                                .setAction("UNDO", new View.OnClickListener() {
-//                                    @Override
-//                                    public void onClick(View view) {
-//                                        Snackbar snackbar = Snackbar.make(findViewById(R.id.coordinatorLayout), dFile + " is restored", Snackbar.LENGTH_SHORT);
-//                                        snackbar.show();
-//                                    }
-//                                });
-//
-//                        snackbar.show();
-//                        filenames.remove(position);
-//                        ((ListView) findViewById(R.id.filenames)).invalidateViews();
-//                    }
-//                });
-//                builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialog, int which) {
-//                        dialog.cancel();
-//                    }
-//                });
-//
-//                builder.setTitle("Delete?");
-//                AlertDialog dialog = builder.create();
-//                dialog.show();
-//                return true;
-//
-//            }
-//        });
 
 
 

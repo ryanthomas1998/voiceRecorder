@@ -3,4 +3,22 @@
     <string name="txt_hint">Enter Filename Here</string>
     <string name="btn1">.mp3</string>
     <string name="start">Start Recording</string>
+    <string-array
+        name="filetypes">
+        <item
+            >MP3</item>
+        <item
+            >MP4</item>
+        <item
+            >AAC</item>
+    </string-array>
+    <string-array
+        name="filevalues">
+        <item
+            >MP3</item>
+        <item
+            >MP4</item>
+        <item
+            >AAC</item>
+    </string-array>
 </resources>
