@@ -44,7 +44,11 @@ public class MainActivity extends AppCompatActivity {
     private File root = new File (Environment.getExternalStorageDirectory() + "/VoiceRecorder/");
     MediaPlayer gus = new MediaPlayer();
     Scene mScene1,mScene2;
+    private RecyclerView mRecyclerView;
+    private RecyclerView.Adapter mAdapter;
+    private RecyclerView.LayoutManager mLayoutManager;
     public int timesFunctionClicked =0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -135,92 +139,106 @@ public class MainActivity extends AppCompatActivity {
 
         ArrayAdapter<String> FilenameAdapter = new ArrayAdapter<>(this, R.layout.list_item, filenames);
 
-        final ListView listView = (ListView) findViewById(R.id.filenames);
-        listView.setAdapter(FilenameAdapter);
-        if(root != null && filenames!=null) {
-            Collections.addAll(filenames, root.list());
-        }
-            ListView list = (ListView) findViewById(R.id.filenames);
-            list.invalidateViews();
+//        final ListView listView = (ListView) findViewById(R.id.filenames);
+//        listView.setAdapter(FilenameAdapter);
+//
+           Collections.addAll(filenames, root.list());
+//
+//            ListView list = (ListView) findViewById(R.id.filenames);
+//            list.invalidateViews();
+
+        mRecyclerView = (RecyclerView) findViewById(R.id.filenames);
+
+        // use this setting to improve performance if you know that changes
+        // in content do not change the layout size of the RecyclerView
+        mRecyclerView.setHasFixedSize(true);
+
+        // use a linear layout manager
+        mLayoutManager = new LinearLayoutManager(this);
+        mRecyclerView.setLayoutManager(mLayoutManager);
+
+        // specify an adapter (see also next example)
+        mAdapter = new fileListAdapter(filenames);
+        mRecyclerView.setAdapter(mAdapter);
 
 
 
-        ListView rows = (ListView) findViewById(R.id.filenames);
-        rows.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int p, long id) {
-                try {
-                    final int position = p;
-                    String path = filenames.get(position);
-                    gus.setDataSource(root + "/" + path);
-                    gus.prepare();
-                    gus.start();
-
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } catch (IllegalStateException e) {
-                    e.printStackTrace();
-                }
-
-                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-                builder.setPositiveButton("Close", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        gus.stop();
-                        gus.release();
-
-                    }
-                });
-
-                builder.setTitle("Playing Recording");
-                AlertDialog dialog = builder.create();
-                dialog.show();
-
-            }
-        });
-
-        ((ListView) findViewById(R.id.filenames)).setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View view, int p, long id) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-                final int position = p;
-                builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        final String dFile = filenames.get(position);
-                        Log.d("filename", dFile);
-                        File delFile = new File(root + "/" + dFile);
-                        delFile.delete();
-
-                        Snackbar snackbar = Snackbar
-                                .make(findViewById(R.id.coordinatorLayout), dFile + " is deleted", Snackbar.LENGTH_LONG)
-                                .setAction("UNDO", new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View view) {
-                                        Snackbar snackbar = Snackbar.make(findViewById(R.id.coordinatorLayout), dFile + " is restored", Snackbar.LENGTH_SHORT);
-                                        snackbar.show();
-                                    }
-                                });
-
-                        snackbar.show();
-                        filenames.remove(position);
-                        ((ListView) findViewById(R.id.filenames)).invalidateViews();
-                    }
-                });
-                builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
-                    }
-                });
-
-                builder.setTitle("Delete?");
-                AlertDialog dialog = builder.create();
-                dialog.show();
-                return true;
-
-            }
-        });
+//        ListView rows = (ListView) findViewById(R.id.filenames);
+//        rows.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View view, int p, long id) {
+//                try {
+//                    final int position = p;
+//                    String path = filenames.get(position);
+//                    gus.setDataSource(root + "/" + path);
+//                    gus.prepare();
+//                    gus.start();
+//
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                } catch (IllegalStateException e) {
+//                    e.printStackTrace();
+//                }
+//
+//                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+//                builder.setPositiveButton("Close", new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        gus.stop();
+//                        gus.release();
+//
+//                    }
+//                });
+//
+//                builder.setTitle("Playing Recording");
+//                AlertDialog dialog = builder.create();
+//                dialog.show();
+//
+//            }
+//        });
+//
+//        ((ListView) findViewById(R.id.filenames)).setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+//            @Override
+//            public boolean onItemLongClick(AdapterView<?> parent, View view, int p, long id) {
+//                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+//                final int position = p;
+//                builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        final String dFile = filenames.get(position);
+//                        Log.d("filename", dFile);
+//                        File delFile = new File(root + "/" + dFile);
+//                        delFile.delete();
+//
+//                        Snackbar snackbar = Snackbar
+//                                .make(findViewById(R.id.coordinatorLayout), dFile + " is deleted", Snackbar.LENGTH_LONG)
+//                                .setAction("UNDO", new View.OnClickListener() {
+//                                    @Override
+//                                    public void onClick(View view) {
+//                                        Snackbar snackbar = Snackbar.make(findViewById(R.id.coordinatorLayout), dFile + " is restored", Snackbar.LENGTH_SHORT);
+//                                        snackbar.show();
+//                                    }
+//                                });
+//
+//                        snackbar.show();
+//                        filenames.remove(position);
+//                        ((ListView) findViewById(R.id.filenames)).invalidateViews();
+//                    }
+//                });
+//                builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        dialog.cancel();
+//                    }
+//                });
+//
+//                builder.setTitle("Delete?");
+//                AlertDialog dialog = builder.create();
+//                dialog.show();
+//                return true;
+//
+//            }
+//        });
 
 
 
@@ -274,8 +292,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
-        ListView list = (ListView) findViewById(R.id.filenames);
-        list.invalidateViews();
+//        ListView list = (ListView) findViewById(R.id.filenames);
+  //      list.invalidateViews();
+        mRecyclerView.invalidate();
         Intent received = getIntent();
 
 
