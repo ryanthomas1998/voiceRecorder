@@ -137,15 +137,8 @@ public class MainActivity extends AppCompatActivity {
 
         final ArrayList<String> filenames = new ArrayList<>();
 
-        ArrayAdapter<String> FilenameAdapter = new ArrayAdapter<>(this, R.layout.list_item, filenames);
+        Collections.addAll(filenames, root.list());
 
-//        final ListView listView = (ListView) findViewById(R.id.filenames);
-//        listView.setAdapter(FilenameAdapter);
-//
-           Collections.addAll(filenames, root.list());
-//
-//            ListView list = (ListView) findViewById(R.id.filenames);
-//            list.invalidateViews();
 
         mRecyclerView = (RecyclerView) findViewById(R.id.filenames);
 
