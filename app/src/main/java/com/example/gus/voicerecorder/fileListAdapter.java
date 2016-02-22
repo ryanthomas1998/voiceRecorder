@@ -120,7 +120,7 @@ import java.util.ArrayList;
             public boolean onLongClick(final View v) {
                 final int pos = mDataset.indexOf(name);
                 remove(name);
-                
+
 
                 final Snackbar snackbar = Snackbar
                         .make(holder.myImageButton, name + " is deleted", Snackbar.LENGTH_LONG)
