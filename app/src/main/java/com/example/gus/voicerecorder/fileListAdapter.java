@@ -3,6 +3,7 @@ package com.example.gus.voicerecorder;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.media.Image;
+import android.media.MediaMetadataRetriever;
 import android.media.MediaPlayer;
 import android.os.Environment;
 import android.support.design.widget.CoordinatorLayout;
@@ -75,8 +76,14 @@ import java.util.ArrayList;
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
         final String name = mDataset.get(position);
-        holder.recordingName.setText(name);
-       // final CoordinatorLayout lay = holder.coordLay;
+
+        //Removes the filetype tag and sets the textview for the name to the filename
+        holder.recordingName.setText(name.replaceAll(".mp3", ""));
+
+        //Grabs the mp3 and sets the duration value to the duration in the metadata.
+        MediaMetadataRetriever mmr = new MediaMetadataRetriever();
+        mmr.setDataSource(root + "/" + name);
+        holder.recordingLength.setText(mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION));
 
         holder.myImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -115,7 +122,7 @@ import java.util.ArrayList;
                                 add(position, name);
                                 try {
                                     undoFile.createNewFile();
-                                }catch (Exception e){
+                                } catch (Exception e) {
                                     e.printStackTrace();
                                 }
 
