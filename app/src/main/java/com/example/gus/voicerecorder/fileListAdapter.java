@@ -8,6 +8,7 @@ import android.media.MediaPlayer;
 import android.os.Environment;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -29,6 +30,7 @@ import java.util.ArrayList;
     public class fileListAdapter extends RecyclerView.Adapter<fileListAdapter.ViewHolder> {
     private ArrayList<String> mDataset;
     MediaPlayer gus = new MediaPlayer();
+    public boolean isPlaying=false;
 
     private File root = new File (Environment.getExternalStorageDirectory() + "/VoiceRecorder/");
 
@@ -81,28 +83,37 @@ import java.util.ArrayList;
         holder.recordingName.setText(name.replaceAll(".mp3", ""));
 
         //Grabs the mp3 and sets the duration value to the duration in the metadata.
-        MediaMetadataRetriever mmr = new MediaMetadataRetriever();
-        mmr.setDataSource(root + "/" + name);
-        holder.recordingLength.setText(mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION));
+
 
         holder.myImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                try {
+                if(isPlaying==false) {
+                    try {
 
-                    String path = name;
-                    gus.setDataSource(root + "/" + path);
-                    gus.prepare();
-                    gus.start();
+                        String path = name;
+                        gus.setDataSource(root + "/" + path);
+                        gus.prepare();
+                        gus.start();
+                        Log.d("is playing", "true");
+                        isPlaying = true;
+                        holder.myImageButton.setBackgroundResource(R.drawable.pausebtn);
 
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } catch (IllegalStateException e) {
-                    e.printStackTrace();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
+                else{
 
+                    gus.stop();
+                    gus.reset();
+                    isPlaying=false;
+                    holder.myImageButton.setBackgroundResource(R.drawable.play);
+
+                }
             }
         });
+
         holder.myImageButton.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(final View v) {
