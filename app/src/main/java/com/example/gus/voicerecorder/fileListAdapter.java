@@ -5,7 +5,10 @@ import android.content.DialogInterface;
 import android.media.Image;
 import android.media.MediaPlayer;
 import android.os.Environment;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,12 +40,14 @@ import java.util.ArrayList;
         // each data item is just a string in this case
         public TextView recordingName, recordingLength;
         public ImageButton myImageButton;
+        public CoordinatorLayout coordLay;
 
         public ViewHolder(View v) {
             super(v);
             recordingName = (TextView) v.findViewById(R.id.recording_name);
             recordingLength = (TextView) v.findViewById(R.id.duration);
             myImageButton = (ImageButton) v.findViewById(R.id.play);
+            coordLay = (CoordinatorLayout) v.findViewById(R.id.coordinatorLayout);
         }
     }
 
@@ -66,11 +71,12 @@ import java.util.ArrayList;
     }
     // Replace the contents of a view (invoked by the layout manager)
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(final ViewHolder holder, final int position) {
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
         final String name = mDataset.get(position);
         holder.recordingName.setText(name);
+       // final CoordinatorLayout lay = holder.coordLay;
 
         holder.myImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -88,6 +94,34 @@ import java.util.ArrayList;
                     e.printStackTrace();
                 }
 
+            }
+        });
+        holder.myImageButton.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(final View v) {
+                remove(name);
+                final File undoFile = new File(root + "/" + name);
+                Log.d("filename", name);
+                File delFile = new File(root + "/" + name);
+                delFile.delete();
+
+                final Snackbar snackbar = Snackbar
+                        .make(holder.myImageButton, name + " is deleted", Snackbar.LENGTH_LONG)
+                        .setAction("UNDO", new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                Snackbar snackbar = Snackbar.make(view, name + " is restored", Snackbar.LENGTH_SHORT);
+                                snackbar.show();
+                                add(position, name);
+                                undoFile.mkdir();
+
+                            }
+
+                        });
+
+                snackbar.show();
+
+                return false;
             }
         });
     }
