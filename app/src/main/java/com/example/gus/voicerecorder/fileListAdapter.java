@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.w3c.dom.Text;
 
@@ -117,11 +118,9 @@ import java.util.ArrayList;
         holder.myImageButton.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(final View v) {
+                final int pos = mDataset.indexOf(name);
                 remove(name);
-                final File undoFile = new File(root + "/" + name);
-                Log.d("filename", name);
-                File delFile = new File(root + "/" + name);
-                delFile.delete();
+                
 
                 final Snackbar snackbar = Snackbar
                         .make(holder.myImageButton, name + " is deleted", Snackbar.LENGTH_LONG)
@@ -130,15 +129,25 @@ import java.util.ArrayList;
                             public void onClick(View view) {
                                 Snackbar snackbar = Snackbar.make(view, name + " is restored", Snackbar.LENGTH_SHORT);
                                 snackbar.show();
-                                add(position, name);
-                                try {
-                                    undoFile.createNewFile();
-                                } catch (Exception e) {
-                                    e.printStackTrace();
-                                }
 
                             }
 
+                        })
+                        .setCallback(new Snackbar.Callback() {
+                            @Override
+                            public void onDismissed(Snackbar snackbar, int event) {
+                                switch (event) {
+                                    case Snackbar.Callback.DISMISS_EVENT_ACTION:
+                                        add(pos, name);
+
+                                        break;
+                                    case Snackbar.Callback.DISMISS_EVENT_TIMEOUT:
+                                        Log.d("filename", name);
+                                        File delFile = new File(root + "/" + name);
+                                        delFile.delete();
+                                        break;
+                                }
+                            }
                         });
 
                 snackbar.show();
