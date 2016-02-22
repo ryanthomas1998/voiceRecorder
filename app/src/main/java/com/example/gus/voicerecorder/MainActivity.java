@@ -137,8 +137,9 @@ public class MainActivity extends AppCompatActivity {
 
         final ListView listView = (ListView) findViewById(R.id.filenames);
         listView.setAdapter(FilenameAdapter);
-
+        if(root != null && filenames!=null) {
             Collections.addAll(filenames, root.list());
+        }
             ListView list = (ListView) findViewById(R.id.filenames);
             list.invalidateViews();
 
@@ -278,7 +279,7 @@ public class MainActivity extends AppCompatActivity {
         Intent received = getIntent();
 
 
-        if(received.getStringExtra("act")!=null && received.getStringExtra("act").equals("record")) {
+        if(received.getStringExtra("act")!=null && received.getStringExtra("act").equals("recordback")) {
             View fabView = findViewById(R.id.record);
             Animation anim = AnimationUtils.loadAnimation(MainActivity.this, R.anim.fab_back);
             fabView.startAnimation(anim);

@@ -318,7 +318,7 @@ public class RecordActivity extends AppCompatActivity {
     public void onBackPressed() {
         Log.d("CDA", "onBackPressed Called");
         Intent setIntent = new Intent(RecordActivity.this,MainActivity.class);
-        setIntent.putExtra("act","record");
+        setIntent.putExtra("act","recordback");
         startActivity(setIntent);
     }
 
