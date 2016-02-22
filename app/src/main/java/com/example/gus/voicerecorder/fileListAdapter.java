@@ -2,9 +2,11 @@ package com.example.gus.voicerecorder;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.media.AudioFormat;
 import android.media.Image;
 import android.media.MediaMetadataRetriever;
 import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Environment;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
@@ -22,7 +24,12 @@ import org.w3c.dom.Text;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.io.*;
+import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by Ryan on 12/20/15.
@@ -81,7 +88,24 @@ import java.util.ArrayList;
         final String name = mDataset.get(position);
 
         //Removes the filetype tag and sets the textview for the name to the filename
+
         holder.recordingName.setText(name.replaceAll(".mp3", ""));
+
+
+
+        MediaMetadataRetriever mmr = new MediaMetadataRetriever();
+        mmr.setDataSource(root + "/"+name);
+        String durationStr = mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION);
+        
+        String dateFormatted = String.format("%02d:%02d:%02d",
+                TimeUnit.MILLISECONDS.toHours(Long.parseLong(durationStr)),
+                TimeUnit.MILLISECONDS.toMinutes(Long.parseLong(durationStr)) -
+                        TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(Long.parseLong(durationStr))),
+                TimeUnit.MILLISECONDS.toSeconds(Long.parseLong(durationStr)) -
+                        TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(Long.parseLong(durationStr))));
+        
+        holder.recordingLength.setText(dateFormatted);
+
 
         //Grabs the mp3 and sets the duration value to the duration in the metadata.
 
