@@ -113,7 +113,11 @@ import java.util.ArrayList;
                                 Snackbar snackbar = Snackbar.make(view, name + " is restored", Snackbar.LENGTH_SHORT);
                                 snackbar.show();
                                 add(position, name);
-                                undoFile.mkdir();
+                                try {
+                                    undoFile.createNewFile();
+                                }catch (Exception e){
+                                    e.printStackTrace();
+                                }
 
                             }
 
