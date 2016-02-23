@@ -66,5 +66,6 @@ android:layout_height="match_parent" android:fitsSystemWindows="true"
         <include layout="@layout/record_config_bar"/>
     </FrameLayout>
 
+
 </android.support.design.widget.CoordinatorLayout>
 
