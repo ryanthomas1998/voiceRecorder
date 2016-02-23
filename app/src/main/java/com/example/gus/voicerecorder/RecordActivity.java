@@ -95,8 +95,9 @@ public class RecordActivity extends AppCompatActivity {
         myAudioRecorder = new MediaRecorder();
 
         myAudioRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
-        myAudioRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
-        myAudioRecorder.setAudioEncoder(MediaRecorder.OutputFormat.AMR_NB);
+        myAudioRecorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4);
+        myAudioRecorder.setAudioEncoder(MediaRecorder.OutputFormat.AMR_WB);
+        myAudioRecorder.setAudioEncodingBitRate(100000);
 
 
         FloatingActionButton mic = (FloatingActionButton) findViewById(R.id.record);

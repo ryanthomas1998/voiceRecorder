@@ -14,7 +14,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="File Type: "
+        android:text="File Format: "
         android:layout_marginTop="10dp"
         android:textSize="20sp"
         android:id="@+id/fileT"
@@ -32,7 +32,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="File Type: "
+        android:text="File Codec: "
         android:textSize="20sp"
         android:textColor="@color/colorAccent"
         android:layout_below="@id/fileT"
@@ -48,6 +48,21 @@
         android:id="@+id/otherSpinner"
         android:layout_marginTop="10dp"
         android:layout_marginRight="10dp"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Bitrate: "
+        android:textSize="20sp"
+        android:textColor="@color/colorAccent"
+        android:layout_below="@id/fileT2"
+        android:layout_marginTop="10dp"
+        android:id="@+id/fileT3"
+        />
+    <NumberPicker
+        android:layout_width="75dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/fileTypeSpinner"
+        android:layout_alignParentEnd="true"/>
 
 
 
