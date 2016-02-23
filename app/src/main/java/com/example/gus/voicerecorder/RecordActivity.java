@@ -31,6 +31,7 @@ import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.utils.ColorTemplate;
+import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 import org.achartengine.ChartFactory;
 import org.achartengine.GraphicalView;
@@ -55,6 +56,7 @@ public class RecordActivity extends AppCompatActivity {
     public Timer timer;
     public String fileName="";
     private GraphicalView mChart;
+    private boolean drawDisplayed;
 
     private XYSeries visitsSeries ;
     private XYSeries secondSeries;
@@ -66,7 +68,7 @@ public class RecordActivity extends AppCompatActivity {
 
     private XYSeriesRenderer visitsRenderer;
     private XYMultipleSeriesRenderer multiRenderer;
-
+    private SlidingUpPanelLayout mLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,6 +80,11 @@ public class RecordActivity extends AppCompatActivity {
 
         // Setting up chart
         setupTopChart();
+
+        final String TAG = "test";
+        mLayout = (SlidingUpPanelLayout) findViewById(R.id.sliding_layout);
+        mLayout.setTouchEnabled(false);
+        mLayout.setMinFlingVelocity(100);
 
 
         myAudioRecorder = new MediaRecorder();
@@ -94,7 +101,14 @@ public class RecordActivity extends AppCompatActivity {
         (findViewById(R.id.pause_record)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(!drawDisplayed) {
+                    mLayout.setPanelHeight(800);
+                    drawDisplayed=true;
+                }else{
 
+                    mLayout.setPanelHeight(0);
+                    drawDisplayed=false;
+                }
 
             }
         });

@@ -34,6 +34,10 @@ import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 
+import com.sothree.slidinguppanel.SlidingUpPanelLayout;
+import com.sothree.slidinguppanel.SlidingUpPanelLayout.PanelSlideListener;
+import com.sothree.slidinguppanel.SlidingUpPanelLayout.PanelState;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -48,6 +52,7 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     public int timesFunctionClicked =0;
+    private SlidingUpPanelLayout mLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,14 +110,16 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-               final View myView = findViewById(R.id.reveal_view);
+                final View myView = findViewById(R.id.reveal_view);
 
 
-                if(timesFunctionClicked>0){
-                    colorRevealHide(myView);
+                if (timesFunctionClicked > 0) {
+                   // colorRevealHide(myView);
+                    Snackbar snackbar = Snackbar.make(findViewById(R.id.coordinatorLayout), "test" + " is restored", Snackbar.LENGTH_SHORT);
+                    snackbar.show();
                     timesFunctionClicked--;
-                }else {
-                    colorRevealShow(myView);
+                } else {
+                    //colorRevealShow(myView);
                     timesFunctionClicked++;
 
 
@@ -213,8 +220,8 @@ public class MainActivity extends AppCompatActivity {
 
         if(received.getStringExtra("act")!=null && received.getStringExtra("act").equals("recordback")) {
             View fabView = findViewById(R.id.record);
-            Animation anim = AnimationUtils.loadAnimation(MainActivity.this, R.anim.fab_back);
-            fabView.startAnimation(anim);
+          //  Animation anim = AnimationUtils.loadAnimation(MainActivity.this, R.anim.fab_back);
+          //  fabView.startAnimation(anim);
         }
 
 

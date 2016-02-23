@@ -1,71 +1,103 @@
-
-<android.support.design.widget.CoordinatorLayout
-xmlns:android="http://schemas.android.com/apk/res/android"
-xmlns:app="http://schemas.android.com/apk/res-auto" android:windowActionBar="false"
-xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-android:layout_height="match_parent" android:fitsSystemWindows="true"
-    style="@style/Theme.AppCompat.NoActionBar">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".RecordActivity" >
 
 
-
-    <RelativeLayout
-        xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+<android:com.sothree.slidinguppanel.SlidingUpPanelLayout
+    xmlns:sothree="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/sliding_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="bottom"
+    android:background="#d8d8d8"
+    sothree:umanoPanelHeight="0dp"
+    sothree:umanoShadowHeight="0dp"
+    sothree:umanoFadeColor="@android:color/transparent"
+    sothree:umanoOverlay="false"
+    sothree:umanoScrollInterpolator="@android:anim/accelerate_decelerate_interpolator"
+   >
+    <android.support.design.widget.CoordinatorLayout
+        android:windowActionBar="false"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/colorPrimary"
-        tools:context="com.example.gus.voicerecorder.RecordActivity">
+       >
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Recording Time"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="25dp"
 
-            android:textSize="35sp"
-            android:textColor="@color/recordText"
-            android:id="@+id/clockLbl"/>
-        <Chronometer
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/chrono"
-            android:layout_centerHorizontal="true"
-            android:layout_below="@id/clockLbl"
-            android:gravity="center_horizontal"
-            android:textSize="70sp"
-            android:textColor="@color/recordText"
-            android:format="%s"/>
 
-        <LinearLayout
-            android:id="@+id/chartTop"
-            android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:background="#D8D8D8"
-            android:padding="15dp"
-            android:layout_marginTop="15dp"
-            android:layout_marginRight="15dp"
-            android:layout_marginLeft="15dp"
-            android:layout_below="@+id/chrono"/>
+        <RelativeLayout
+            xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/colorPrimary"
+            tools:context="com.example.gus.voicerecorder.RecordActivity">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="3dp"
-            android:orientation="vertical"
-            android:id="@+id/divider"
-            android:background="#000000"
-            android:layout_marginTop="115dp"
-            android:layout_below="@+id/chrono"
-          />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Recording Time"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="25dp"
+
+                android:textSize="35sp"
+                android:textColor="@color/recordText"
+                android:id="@+id/clockLbl"/>
+            <Chronometer
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/chrono"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@id/clockLbl"
+                android:gravity="center_horizontal"
+                android:textSize="70sp"
+                android:textColor="@color/recordText"
+                android:format="%s"/>
+
+            <LinearLayout
+                android:id="@+id/chartTop"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:background="#D8D8D8"
+                android:padding="15dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginLeft="15dp"
+                android:layout_below="@+id/chrono"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="3dp"
+                android:orientation="vertical"
+                android:id="@+id/divider"
+                android:background="#000000"
+                android:layout_marginTop="115dp"
+                android:layout_below="@+id/chrono"
+                />
+
+        </RelativeLayout>
+
+
+
+        <FrameLayout
+            android:id="@+id/scene_root"
+            android:layout_height="match_parent"
+            android:layout_width="match_parent">
+
+            <include layout="@layout/record_config_bar"/>
+        </FrameLayout>
+
+
+
+
+    </android.support.design.widget.CoordinatorLayout>
+
+     <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+         android:gravity="center|top"
+        android:text="The Awesome Sliding Up Panel"
+     android:textSize="16sp" />
+</android:com.sothree.slidinguppanel.SlidingUpPanelLayout>
 
     </RelativeLayout>
-
-    <FrameLayout
-        android:id="@+id/scene_root"
-        android:layout_height="match_parent"
-        android:layout_width="match_parent">
-        <include layout="@layout/record_config_bar"/>
-    </FrameLayout>
-
-
-</android.support.design.widget.CoordinatorLayout>
-

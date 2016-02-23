@@ -22,11 +22,15 @@ repositories {
     maven { url "https://jitpack.io" }
     maven {url 'https://repository-achartengine.forge.cloudbees.com/snapshot'
     }
+    mavenCentral()
+
+
 }
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     testCompile 'junit:junit:4.12'
+    compile 'com.sothree.slidinguppanel:library:3.2.1'
     compile 'com.android.support:appcompat-v7:23.1.0'
     compile 'com.android.support:design:23.1.0'
     compile 'org.achartengine:achartengine:1.2.0'

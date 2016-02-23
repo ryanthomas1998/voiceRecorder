@@ -151,7 +151,7 @@ import java.util.concurrent.TimeUnit;
                         .setAction("UNDO", new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
-                                Snackbar snackbar = Snackbar.make(view, name + " is restored", Snackbar.LENGTH_SHORT);
+                                Snackbar snackbar = Snackbar.make(view.getRootView(), name + " is restored", Snackbar.LENGTH_SHORT);
                                 snackbar.show();
 
                             }
