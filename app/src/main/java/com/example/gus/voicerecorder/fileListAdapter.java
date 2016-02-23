@@ -17,6 +17,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -51,14 +52,14 @@ import java.util.concurrent.TimeUnit;
         // each data item is just a string in this case
         public TextView recordingName, recordingLength;
         public ImageButton myImageButton;
-        public CoordinatorLayout coordLay;
+        public RelativeLayout relLay;
 
         public ViewHolder(View v) {
             super(v);
             recordingName = (TextView) v.findViewById(R.id.recording_name);
             recordingLength = (TextView) v.findViewById(R.id.duration);
             myImageButton = (ImageButton) v.findViewById(R.id.play);
-            coordLay = (CoordinatorLayout) v.findViewById(R.id.coordinatorLayout);
+            relLay = (RelativeLayout) v.findViewById(R.id.item_layout);
         }
     }
 
@@ -113,31 +114,16 @@ import java.util.concurrent.TimeUnit;
         holder.myImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(isPlaying==false) {
-                    try {
-
-                        String path = name;
-                        gus.setDataSource(root + "/" + path);
-                        gus.prepare();
-                        gus.start();
-                        Log.d("is playing", "true");
-                        isPlaying = true;
-                        holder.myImageButton.setBackgroundResource(R.drawable.pausebtn);
-
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-                else{
-
-                    gus.stop();
-                    gus.reset();
-                    isPlaying=false;
-                    holder.myImageButton.setBackgroundResource(R.drawable.play);
-
-                }
+                playSong(holder,name);
             }
         });
+        holder.relLay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                playSong(holder,name);
+            }
+        });
+
 
         holder.myImageButton.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
@@ -186,6 +172,31 @@ import java.util.concurrent.TimeUnit;
         return mDataset.size();
     }
 
+    public void playSong(ViewHolder holder, String name){
+        if(isPlaying==false) {
+            try {
+
+                String path = name;
+                gus.setDataSource(root + "/" + path);
+                gus.prepare();
+                gus.start();
+                Log.d("is playing", "true");
+                isPlaying = true;
+                holder.myImageButton.setBackgroundResource(R.drawable.pausebtn);
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        else{
+
+            gus.stop();
+            gus.reset();
+            isPlaying=false;
+            holder.myImageButton.setBackgroundResource(R.drawable.play);
+
+        }
+    }
     // Provide a suitable constructor (depends on the kind of dataset)
     public fileListAdapter(ArrayList<String> myDataset) {
         mDataset = myDataset;
