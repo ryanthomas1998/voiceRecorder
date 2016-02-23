@@ -114,9 +114,8 @@ public class MainActivity extends AppCompatActivity {
 
 
                 if (timesFunctionClicked > 0) {
-                   // colorRevealHide(myView);
-                    Snackbar snackbar = Snackbar.make(findViewById(R.id.coordinatorLayout), "test" + " is restored", Snackbar.LENGTH_SHORT);
-                    snackbar.show();
+                    colorRevealHide(myView);
+
                     timesFunctionClicked--;
                 } else {
                     //colorRevealShow(myView);

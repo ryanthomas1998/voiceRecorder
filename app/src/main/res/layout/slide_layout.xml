@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:paddingRight="10dp"
+    android:paddingLeft="10dp"
+    android:layout_height="match_parent">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:padding="10dp"
+        android:background="#979797"
+        android:id="@+id/line"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="File Type: "
+        android:layout_marginTop="10dp"
+        android:textSize="20sp"
+        android:id="@+id/fileT"
+        android:layout_below="@+id/line"
+        android:textColor="@color/colorAccent"/>
+    <Spinner
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+       android:layout_alignParentEnd="true"
+        android:layout_marginTop="10dp"
+        android:layout_below="@+id/line"
+        android:textColor="@color/colorAccent"
+        android:id="@+id/fileTypeSpinner"
+        android:layout_marginRight="10dp"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="File Type: "
+        android:textSize="20sp"
+        android:textColor="@color/colorAccent"
+        android:layout_below="@id/fileT"
+        android:layout_marginTop="10dp"
+        android:id="@+id/fileT2"
+        />
+    <Spinner
+        android:layout_width="wrap_content"
+        android:textColor="@color/colorAccent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@+id/fileTypeSpinner"
+        android:id="@+id/otherSpinner"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="10dp"/>
+
+
+
+</RelativeLayout>

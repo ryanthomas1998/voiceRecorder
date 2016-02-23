@@ -83,7 +83,6 @@
             android:id="@+id/scene_root"
             android:layout_height="match_parent"
             android:layout_width="match_parent">
-
             <include layout="@layout/record_config_bar"/>
         </FrameLayout>
 
@@ -91,13 +90,12 @@
 
 
     </android.support.design.widget.CoordinatorLayout>
-
-     <TextView
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-         android:gravity="center|top"
-        android:text="The Awesome Sliding Up Panel"
-     android:textSize="16sp" />
+     >
+        <include layout="@layout/slide_layout"/>
+    </RelativeLayout>
 </android:com.sothree.slidinguppanel.SlidingUpPanelLayout>
 
     </RelativeLayout>

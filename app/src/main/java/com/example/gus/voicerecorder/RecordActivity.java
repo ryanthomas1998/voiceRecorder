@@ -1,9 +1,11 @@
 package com.example.gus.voicerecorder;
 
+import android.animation.TimeInterpolator;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
+import android.graphics.Interpolator;
 import android.media.Image;
 import android.media.MediaRecorder;
 import android.os.AsyncTask;
@@ -19,10 +21,13 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.animation.AccelerateDecelerateInterpolator;
+import android.widget.ArrayAdapter;
 import android.widget.Chronometer;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.BarChart;
@@ -103,15 +108,26 @@ public class RecordActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if(!drawDisplayed) {
                     mLayout.setPanelHeight(800);
+                    (findViewById(R.id.pause_record)).animate().rotationBy(180).setDuration(400).setInterpolator(new AccelerateDecelerateInterpolator()).start();
                     drawDisplayed=true;
                 }else{
 
                     mLayout.setPanelHeight(0);
+                    (findViewById(R.id.pause_record)).animate().rotationBy(180).setInterpolator(new AccelerateDecelerateInterpolator()).setDuration(400).start();
                     drawDisplayed=false;
                 }
 
             }
         });
+
+        Spinner spinner = (Spinner) findViewById(R.id.fileTypeSpinner);
+// Create an ArrayAdapter using the string array and a default spinner layout
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                R.array.filetypes, android.R.layout.simple_spinner_item);
+// Specify the layout to use when the list of choices appears
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+// Apply the adapter to the spinner
+        spinner.setAdapter(adapter);
 
         (findViewById(R.id.stop_record)).setOnClickListener(new View.OnClickListener() {
             @Override
