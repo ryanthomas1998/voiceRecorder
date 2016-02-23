@@ -90,6 +90,10 @@ public class RecordActivity extends AppCompatActivity {
         mLayout = (SlidingUpPanelLayout) findViewById(R.id.sliding_layout);
         mLayout.setTouchEnabled(false);
         mLayout.setMinFlingVelocity(100);
+        mLayout.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
+        mLayout.setPanelHeight(600);
+
+
 
 
         myAudioRecorder = new MediaRecorder();
@@ -108,12 +112,12 @@ public class RecordActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if(!drawDisplayed) {
-                    mLayout.setPanelHeight(800);
+                    mLayout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
                     (findViewById(R.id.pause_record)).animate().rotationBy(180).setDuration(400).setInterpolator(new AccelerateDecelerateInterpolator()).start();
                     drawDisplayed=true;
                 }else{
 
-                    mLayout.setPanelHeight(0);
+                    mLayout.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
                     (findViewById(R.id.pause_record)).animate().rotationBy(180).setInterpolator(new AccelerateDecelerateInterpolator()).setDuration(400).start();
                     drawDisplayed=false;
                 }
@@ -122,12 +126,12 @@ public class RecordActivity extends AppCompatActivity {
         });
 
         Spinner spinner = (Spinner) findViewById(R.id.fileTypeSpinner);
-// Create an ArrayAdapter using the string array and a default spinner layout
+        // Create an ArrayAdapter using the string array and a default spinner layout
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
                 R.array.filetypes, android.R.layout.simple_spinner_item);
-// Specify the layout to use when the list of choices appears
+        // Specify the layout to use when the list of choices appears
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-// Apply the adapter to the spinner
+        // Apply the adapter to the spinner
         spinner.setAdapter(adapter);
 
         (findViewById(R.id.stop_record)).setOnClickListener(new View.OnClickListener() {
