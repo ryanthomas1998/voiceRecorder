@@ -172,12 +172,21 @@ import java.util.concurrent.TimeUnit;
         return mDataset.size();
     }
 
-    public void playSong(ViewHolder holder, String name){
+    public void playSong(final ViewHolder holder, String name){
         if(isPlaying==false) {
             try {
 
                 String path = name;
                 gus.setDataSource(root + "/" + path);
+                gus.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+
+                    @Override
+                    public void onCompletion(MediaPlayer mp) {
+                        holder.myImageButton.setBackgroundResource(R.drawable.play);
+                        isPlaying=false;
+                    }
+
+                });
                 gus.prepare();
                 gus.start();
                 Log.d("is playing", "true");
@@ -197,6 +206,7 @@ import java.util.concurrent.TimeUnit;
 
         }
     }
+
     // Provide a suitable constructor (depends on the kind of dataset)
     public fileListAdapter(ArrayList<String> myDataset) {
         mDataset = myDataset;
