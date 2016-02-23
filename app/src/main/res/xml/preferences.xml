@@ -2,11 +2,11 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
     <CheckBoxPreference
         android:key="pref_sync"
-        android:title="Test"
-        android:summary="test"
+        android:title="Are you amazing?"
         android:defaultValue="true" />
     <ListPreference
-        android:key="pref_syncConnectionType"
+        android:key="file_format"
+        android:dependency="pref_sync"
         android:title="File Format"
         android:dialogTitle="Select Format"
         android:entries="@array/filetypes"
@@ -14,5 +14,21 @@
         android:defaultValue="MP3"
         android:summary="Select Recording Format"
          />
-    <Preference android:title="Crafted Carefully by Gus and Ryan"/>
+    <ListPreference
+        android:key="codec"
+        android:dependency="pref_sync"
+        android:title="Audio Codec"
+        android:dialogTitle="Select Codec"
+        android:entries="@array/filetypes"
+        android:entryValues="@array/filevalues"
+        android:defaultValue="MP3"
+        android:summary="Select Recording Format"
+        />
+    <EditTextPreference
+        android:key="bitrate"
+        android:dependency="pref_sync"
+        android:title="Bitrate"
+        android:defaultValue="75000"
+        />
+    <Preference android:title="Crafted Carefully by Gus and Ryan" />
 </PreferenceScreen>
