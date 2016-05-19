@@ -20,7 +20,7 @@
         </activity>
         <activity android:name=".RecordActivity" android:theme="@style/AppThemeNoAction"  android:screenOrientation="portrait" >
             </activity>
-        <activity android:name=".SettingsActivity" android:screenOrientation="portrait" android:theme="@android:style/Theme.Holo" >
+        <activity android:name=".SettingsActivity" android:screenOrientation="portrait" android:theme="@android:style/Theme.Material.Settings">
         </activity>
     </application>
 

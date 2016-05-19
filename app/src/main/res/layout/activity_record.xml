@@ -70,7 +70,7 @@
                 android:layout_height="3dp"
                 android:orientation="vertical"
                 android:id="@+id/divider"
-                android:background="#000000"
+                android:background="#979797"
                 android:layout_marginTop="115dp"
                 android:layout_below="@+id/chrono"
                 />

@@ -2,6 +2,7 @@ package com.example.gus.voicerecorder;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.graphics.Color;
 import android.media.AudioFormat;
 import android.media.Image;
 import android.media.MediaMetadataRetriever;
@@ -40,6 +41,7 @@ import java.util.concurrent.TimeUnit;
     private ArrayList<String> mDataset;
     MediaPlayer gus = new MediaPlayer();
     public boolean isPlaying=false;
+    public int numPlayClicks=0;
 
     private File root = new File (Environment.getExternalStorageDirectory() + "/VoiceRecorder/");
 
@@ -125,7 +127,7 @@ import java.util.concurrent.TimeUnit;
         });
 
 
-        holder.myImageButton.setOnLongClickListener(new View.OnLongClickListener() {
+        holder.relLay.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(final View v) {
                 final int pos = mDataset.indexOf(name);
@@ -137,7 +139,7 @@ import java.util.concurrent.TimeUnit;
                         .setAction("UNDO", new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
-                                Snackbar snackbar = Snackbar.make(view.getRootView(), name + " is restored", Snackbar.LENGTH_SHORT);
+                                Snackbar snackbar = Snackbar.make(view, name + " is restored", Snackbar.LENGTH_SHORT);
                                 snackbar.show();
 
                             }
@@ -158,7 +160,8 @@ import java.util.concurrent.TimeUnit;
                                         break;
                                 }
                             }
-                        });
+                        })
+                        .setActionTextColor(Color.parseColor("#FFC910"));
 
                 snackbar.show();
 
@@ -199,7 +202,7 @@ import java.util.concurrent.TimeUnit;
         }
         else{
 
-            gus.stop();
+            gus.pause();
             gus.reset();
             isPlaying=false;
             holder.myImageButton.setBackgroundResource(R.drawable.play);

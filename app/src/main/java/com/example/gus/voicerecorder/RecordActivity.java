@@ -3,6 +3,7 @@ package com.example.gus.voicerecorder;
 import android.animation.TimeInterpolator;
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.Interpolator;
@@ -11,6 +12,7 @@ import android.media.MediaRecorder;
 import android.os.AsyncTask;
 import android.os.Environment;
 import android.os.SystemClock;
+import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.util.Pair;
@@ -83,6 +85,10 @@ public class RecordActivity extends AppCompatActivity {
 
         chronometer = (Chronometer) findViewById(R.id.chrono);
 
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+        int fileformat = Integer.parseInt(sharedPref.getString(SettingsActivity.KEY_FILE_FORMAT, ""));
+        int codec = Integer.parseInt(sharedPref.getString(SettingsActivity.KEY_CODEC, ""));
+
         // Setting up chart
         setupTopChart();
 
@@ -99,8 +105,8 @@ public class RecordActivity extends AppCompatActivity {
         myAudioRecorder = new MediaRecorder();
 
         myAudioRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
-        myAudioRecorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4);
-        myAudioRecorder.setAudioEncoder(MediaRecorder.OutputFormat.AMR_WB);
+        myAudioRecorder.setOutputFormat(fileformat);
+        myAudioRecorder.setAudioEncoder(codec);
         myAudioRecorder.setAudioEncodingBitRate(100000);
 
 
