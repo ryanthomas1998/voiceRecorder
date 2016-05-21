@@ -9,6 +9,7 @@ import android.graphics.Color;
 import android.graphics.Interpolator;
 import android.media.Image;
 import android.media.MediaRecorder;
+import android.media.audiofx.BassBoost;
 import android.os.AsyncTask;
 import android.os.Environment;
 import android.os.SystemClock;
@@ -50,6 +51,7 @@ import org.achartengine.renderer.XYSeriesRenderer;
 
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -100,6 +102,7 @@ public class RecordActivity extends AppCompatActivity {
         mLayout.setPanelHeight(600);
 
 
+        (( TextView) findViewById(R.id.codec)).setText(sharedPref.getString(SettingsActivity.KEY_CODEC,""));
 
 
         myAudioRecorder = new MediaRecorder();
@@ -131,14 +134,14 @@ public class RecordActivity extends AppCompatActivity {
             }
         });
 
-        Spinner spinner = (Spinner) findViewById(R.id.fileTypeSpinner);
+        //Spinner spinner = (Spinner) findViewById(R.id.fileTypeSpinner);
         // Create an ArrayAdapter using the string array and a default spinner layout
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
-                R.array.filetypes, android.R.layout.simple_spinner_item);
+       // ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+       //         R.array.filetypes, android.R.layout.simple_spinner_item);
         // Specify the layout to use when the list of choices appears
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+      //  adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         // Apply the adapter to the spinner
-        spinner.setAdapter(adapter);
+       // spinner.setAdapter(adapter);
 
         (findViewById(R.id.stop_record)).setOnClickListener(new View.OnClickListener() {
             @Override

@@ -96,16 +96,18 @@ import java.util.concurrent.TimeUnit;
 
 
 
-        MediaMetadataRetriever mmr = new MediaMetadataRetriever();
-        mmr.setDataSource(root + "/"+name);
-        String durationStr = mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION);
-        
-        String dateFormatted = String.format("%02d:%02d:%02d",
-                TimeUnit.MILLISECONDS.toHours(Long.parseLong(durationStr)),
-                TimeUnit.MILLISECONDS.toMinutes(Long.parseLong(durationStr)) -
-                        TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(Long.parseLong(durationStr))),
-                TimeUnit.MILLISECONDS.toSeconds(Long.parseLong(durationStr)) -
-                        TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(Long.parseLong(durationStr))));
+    //    MediaMetadataRetriever mmr = new MediaMetadataRetriever();
+  //      Log.d("Test", root + "/" + name);
+//        mmr.setDataSource(root + "/"+name);
+      //  String durationStr = mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION);
+        String dateFormatted = "1:00";
+
+//        String dateFormatted = String.format("%02d:%02d:%02d",
+//                TimeUnit.MILLISECONDS.toHours(Long.parseLong(durationStr)),
+//                TimeUnit.MILLISECONDS.toMinutes(Long.parseLong(durationStr)) -
+//                        TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(Long.parseLong(durationStr))),
+//                TimeUnit.MILLISECONDS.toSeconds(Long.parseLong(durationStr)) -
+//                        TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(Long.parseLong(durationStr))));
         
         holder.recordingLength.setText(dateFormatted);
 

@@ -4,66 +4,77 @@
     android:paddingRight="10dp"
     android:paddingLeft="10dp"
     android:layout_height="match_parent">
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Recording Info"
+        android:fontFamily="sans-serif-light"
+        android:textSize="25sp"
         android:padding="10dp"
-        android:background="#979797"
-        android:id="@+id/line"/>
+        android:layout_centerHorizontal="true"
+        android:id="@+id/drawer_label"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="File Format: "
-        android:layout_marginTop="10dp"
-        android:textSize="20sp"
-        android:id="@+id/fileT"
-        android:layout_below="@+id/line"
-        android:textColor="@color/colorAccent"/>
-    <Spinner
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-       android:layout_alignParentEnd="true"
-        android:layout_marginTop="10dp"
-        android:layout_below="@+id/line"
-        android:textColor="@color/colorAccent"
-        android:id="@+id/fileTypeSpinner"
-        android:layout_marginRight="10dp"/>
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="File Codec: "
-        android:textSize="20sp"
-        android:textColor="@color/colorAccent"
-        android:layout_below="@id/fileT"
-        android:layout_marginTop="10dp"
-        android:id="@+id/fileT2"
-        />
-    <Spinner
-        android:layout_width="wrap_content"
-        android:textColor="@color/colorAccent"
-        android:layout_height="wrap_content"
+        android:text="1:23"
+        android:layout_margin="10dp"
+        android:id="@+id/duration"
+        android:layout_below="@+id/drawer_label"
         android:layout_alignParentEnd="true"
-        android:layout_below="@+id/fileTypeSpinner"
-        android:id="@+id/otherSpinner"
-        android:layout_marginTop="10dp"
-        android:layout_marginRight="10dp"/>
+        android:textAppearance="@android:style/TextAppearance.Material.Large" />
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Bitrate: "
+        android:text="Duration: "
+        android:id="@+id/duration_label"
+        android:layout_margin="10dp"
+        android:textAppearance="@android:style/TextAppearance.Material.Large"
         android:textSize="20sp"
-        android:textColor="@color/colorAccent"
-        android:layout_below="@id/fileT2"
-        android:layout_marginTop="10dp"
-        android:id="@+id/fileT3"
-        />
-    <NumberPicker
-        android:layout_width="75dp"
+        android:layout_below="@+id/drawer_label"
+        android:layout_alignParentStart="true" />
+    <TextView
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/fileTypeSpinner"
-        android:layout_alignParentEnd="true"/>
+        android:text="MP3"
+        android:layout_margin="10dp"
+        android:id="@+id/filetype"
+        android:layout_below="@+id/duration_label"
+        android:layout_alignParentEnd="true"
+        android:textAppearance="@android:style/TextAppearance.Material.Large" />
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="File Type: "
+        android:id="@+id/filetype_label"
+        android:layout_margin="10dp"
+        android:textAppearance="@android:style/TextAppearance.Material.Large"
+        android:textSize="20sp"
+        android:layout_below="@+id/duration_label"
+        android:layout_alignParentStart="true" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="AAC"
+        android:layout_margin="10dp"
+        android:id="@+id/codec"
+        android:layout_below="@+id/filetype_label"
+        android:layout_alignParentEnd="true"
+        android:textAppearance="@android:style/TextAppearance.Material.Large" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Codec: "
+        android:id="@+id/codec_label"
+        android:layout_margin="10dp"
+        android:textAppearance="@android:style/TextAppearance.Material.Large"
+        android:textSize="20sp"
+        android:layout_below="@+id/filetype_label"
+        android:layout_alignParentStart="true" />
 
 
 </RelativeLayout>
